@@ -84,7 +84,7 @@
             100% { transform: scale(1) rotate(360deg); }
         }
 
-        /* تصميم شارة حرف S بالمواصفات الجديدة (خلفية بيضاء، إطار أزرق غامق، نيزك منير) */
+        /* تصميم شارة حرف S التفاعلية */
         .s-badge-container {
             position: relative;
             display: inline-flex;
@@ -96,6 +96,7 @@
             border-radius: 50%;
             box-shadow: 0 0 8px rgba(0, 242, 254, 0.5);
             vertical-align: middle;
+            flex-shrink: 0;
         }
 
         .s-badge-logo {
@@ -172,7 +173,8 @@
         .total-item { background: #ffffff; padding: 6px 4px; border-radius: 6px; border: 1px solid #bfdbfe; color: #1e3c72; font-weight: bold; }
         .total-item span { display: block; font-weight: bold; font-size: 0.95rem; margin-top: 2px; }
 
-        .footer-signature { text-align: center; margin-top: 15px; padding-top: 8px; border-top: 1px solid #cbd5e1; font-size: 0.75rem; color: #64748b; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        /* التوقيع السفلي للنظام */
+        .footer-signature { text-align: center; margin-top: 20px; padding-top: 10px; border-top: 1px solid #cbd5e1; font-size: 0.75rem; color: #64748b; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; line-height: 1; min-height: 30px; }
 
         .scanner-box { display: none; background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 8px; position: relative; text-align: center; }
         .camera-div { width: 100%; max-width: 350px; margin: 0 auto; min-height: 180px; }
@@ -183,28 +185,41 @@
             #receiptPrintSection { position: absolute; left: 0; top: 0; width: 80mm; font-family: 'Courier New', monospace; font-size: 12px; text-align: center; direction: rtl; color: #000; }
         }
 
+        /* تصغير تقرير الـ PDF وضبط هوامشه لتفادي أي تداخل */
         .pdf-export-mode {
-            width: 100% !important;
-            max-width: 100% !important;
-            padding: 10px 0 !important;
-            margin: 0 !important;
+            width: 96% !important;
+            max-width: 96% !important;
+            padding: 5px !important;
+            margin: 0 auto !important;
+            transform: scale(0.96);
+            transform-origin: top center;
         }
 
         .pdf-export-mode table { 
             width: 100% !important; 
             table-layout: fixed !important;
-            font-size: 8pt !important; 
+            font-size: 7.5pt !important; 
         }
 
         .pdf-export-mode th, 
         .pdf-export-mode td { 
-            padding: 4px 2px !important; 
+            padding: 3px 2px !important; 
             word-break: break-word !important; 
             white-space: normal !important; 
         }
 
         .pdf-export-mode .no-pdf { 
             display: none !important; 
+        }
+
+        .pdf-export-mode .footer-signature {
+            margin-top: 30px !important;
+            padding-top: 15px !important;
+            display: block !important;
+            text-align: center !important;
+            font-size: 8pt !important;
+            border-top: 1px solid #ccc !important;
+            clear: both !important;
         }
     </style>
 </head>
@@ -248,8 +263,7 @@
         </div>
 
         <div class="footer-signature" style="margin-top:12px;">
-            Systems C01 - 
-            <div class="s-badge-container" style="width:24px; height:24px;"><div class="s-badge-trail" style="width:28px; height:28px;"></div><div class="s-badge-logo" style="font-size:12px;">S</div></div>
+            Systems C01 - 2026
         </div>
     </div>
 </div>
@@ -585,8 +599,7 @@
                 <tbody id="savedInvoicesBody"></tbody>
             </table></div>
             <div class="footer-signature" style="margin-top:8px;">
-                Systems C01 - 
-                <div class="s-badge-container" style="width:24px; height:24px;"><div class="s-badge-trail" style="width:28px; height:28px;"></div><div class="s-badge-logo" style="font-size:12px;">S</div></div>
+                Systems C01 - 2026
             </div>
         </div>
     </div>
@@ -632,8 +645,7 @@
     </div>
 
     <div class="footer-signature">
-        Systems C01 - 
-        <div class="s-badge-container" style="width:24px; height:24px;"><div class="s-badge-trail" style="width:28px; height:28px;"></div><div class="s-badge-logo" style="font-size:12px;">S</div></div>
+        Systems C01 - 2026
     </div>
 </div>
 
@@ -965,19 +977,23 @@
         return `${day}/${month}/${year}<br><span style="color:#64748b; font-size:0.7rem;">${hours}:${minutes}</span>`;
     }
 
+    /* دالة الفلترة الذكية المطورة لتحويل DD/MM/YY إلى YYYY-MM-DD بالمطابقة */
     function extractDateYYYYMMDD(dateStr) {
         if (!dateStr) return "";
         try {
-            if (dateStr.includes('T')) return dateStr.slice(0, 10);
-            let parts = dateStr.split(' ')[0].split('/');
+            let cleanStr = dateStr.toString().split('<')[0].split(' ')[0].trim();
+            if (cleanStr.includes('T')) return cleanStr.slice(0, 10);
+            
+            let parts = cleanStr.split('/');
             if (parts.length === 3) {
                 let day = parts[0].padStart(2, '0');
                 let month = parts[1].padStart(2, '0');
-                let year = parts[2].length === 2 ? "20" + parts[2] : parts[2];
+                let year = parts[2].trim();
+                if (year.length === 2) year = "20" + year;
                 return `${year}-${month}-${day}`;
             }
         } catch (e) {}
-        return dateStr.slice(0, 10);
+        return dateStr.toString().slice(0, 10);
     }
 
     function parseFormattedDateToISO(dateStr) {
@@ -2120,8 +2136,8 @@
         element.classList.add('pdf-export-mode');
 
         const opt = {
-            margin:       [10, 8, 10, 8],
-            filename:     `S_Systems_C01_Report_${new Date().toISOString().slice(0,10)}.pdf`,
+            margin:       [12, 14, 12, 10], // توسيع الهوامش [أعلى، يمين، أسفل، يسار] لمنع أي قطع
+            filename:     `Systems_C01_Report_${new Date().toISOString().slice(0,10)}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
@@ -2228,8 +2244,7 @@
 
         let receiptHTML = `
             <div style="font-size:16px; font-weight:bold; margin-bottom:2px; display:flex; align-items:center; justify-content:center; gap:4px;">
-                Systems C01 - 
-                <div class="s-badge-container" style="width:20px; height:20px;"><div class="s-badge-trail" style="width:16px; height:16px;"></div><div class="s-badge-logo" style="font-size:10px;">S</div></div>
+                Systems C01
             </div>
             <div style="border-top:1px dashed #000; border-bottom:1px dashed #000; padding:4px 0; margin-bottom:6px; margin-top:6px;">
                 <p style="font-size:11px; margin:2px 0;">رقم الفاتورة: <b>#${inv.id}</b></p>
