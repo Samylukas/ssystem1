@@ -140,11 +140,11 @@
         .nav-controls { display: flex; gap: 4px; justify-content: center; margin-top: 8px; }
         .nav-controls .btn { width: auto; font-size: 0.75rem; padding: 4px 8px; margin-top: 0; }
 
-        /* الضبط الجديد للهوامش والجداول منعاً للتداخل */
+        /* تنسيق الجداول المطور منعاً للتداخل */
         .table-responsive { width: 100%; overflow-x: auto; margin-top: 8px; border-radius: 8px; border: 2px solid #3498db; }
-        table { width: 100%; border-collapse: collapse; background: #fff; table-layout: auto; direction: rtl; }
-        th, td { padding: 6px 10px; border: 1px solid #93c5fd; text-align: center; font-size: 0.82rem; word-break: normal; white-space: nowrap; vertical-align: middle; color: #1e293b !important; font-weight: bold; line-height: 1.5; }
-        th { background: #fcf8e3; color: #1e3c72 !important; white-space: nowrap; font-size: 0.85rem; border-bottom: 2px solid #3498db; }
+        table { width: 100%; border-collapse: collapse; background: #fff; direction: rtl; }
+        th, td { padding: 8px 6px; border: 1px solid #93c5fd; text-align: center; font-size: 0.78rem; vertical-align: middle; color: #1e293b !important; font-weight: bold; line-height: 1.4; white-space: normal !important; word-break: break-word; }
+        th { background: #fcf8e3; color: #1e3c72 !important; white-space: nowrap !important; font-size: 0.8rem; border-bottom: 2px solid #3498db; }
 
         .action-btn-group { display: flex; flex-direction: row; flex-wrap: wrap; gap: 2px; justify-content: center; min-width: 120px; }
         .action-btn-group .btn { width: auto; font-size: 0.65rem; padding: 2px 4px; margin: 0; line-height: 1.2; }
@@ -913,7 +913,7 @@
         let year = String(d.getFullYear()).slice(-2);
         let hours = String(d.getHours()).padStart(2, '0');
         let minutes = String(d.getMinutes()).padStart(2, '0');
-        return `${day}/${month}/${year} ${hours}:${minutes}`;
+        return `${day}/${month}/${year}<br><span style="color:#64748b; font-size:0.7rem;">${hours}:${minutes}</span>`;
     }
 
     function extractDateYYYYMMDD(dateStr) {
@@ -1111,26 +1111,11 @@
         const userSelect = document.getElementById('entryUserSelect');
         const passInput = document.getElementById('entryPassInput');
 
-        const userInput = userSelect ? userSelect.value.trim().toLowerCase() : 'admin';
+        const userInput = userSelect ? userSelect.value.trim().toLowerCase() : '';
         const passVal = passInput ? passInput.value.toString().trim() : '';
 
-        if (passVal === '852') {
-            currentUser = { username: userInput, password: passVal, role: 'Admin' };
-            document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('mainContainer').style.display = 'block';
-            
-            const greeting = document.getElementById('userGreeting');
-            if (greeting) greeting.textContent = `👤 المستخدم: ${userInput.toUpperCase()} (ماستر)`;
-
-            applyRolePermissions();
-            prepareNewInvoice();
-            populatePartnerDropdown();
-            updateLowStockAlert();
-            return;
-        }
-
         if (!passVal) {
-            alert('برجاء إدخال كلمة المرور!');
+            alert('⚠️ برجاء إدخال كلمة المرور!');
             return;
         }
 
@@ -1141,32 +1126,28 @@
             } catch(e) { usersSource = []; }
         }
 
-        let matched = null;
-        if (usersSource && usersSource.length > 0) {
-            matched = usersSource.find(u => 
-                u.username.toString().trim().toLowerCase() === userInput && 
-                u.password.toString().trim() === passVal
-            );
+        const matchedUser = usersSource.find(u => 
+            u.username.toString().trim().toLowerCase() === userInput && 
+            u.password.toString().trim() === passVal
+        );
+
+        if (matchedUser) {
+            currentUser = matchedUser;
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'block';
+            
+            const greeting = document.getElementById('userGreeting');
+            if (greeting) greeting.textContent = `👤 المستخدم: ${matchedUser.username.toUpperCase()} (${matchedUser.role || 'مستخدم'})`;
+
+            applyRolePermissions();
+            prepareNewInvoice();
+            populatePartnerDropdown();
+            updateLowStockAlert();
+        } else {
+            alert('❌ كلمة السر غير صحيحة أو غير مسجلة في جدول المستخدمين!');
+            passInput.value = '';
+            passInput.focus();
         }
-
-        if (!matched) {
-            let userRole = 'Admin';
-            if (userInput.includes('cs2')) userRole = 'Manager';
-            else if (userInput.includes('cashier')) userRole = 'Cashier';
-            matched = { username: userInput, password: passVal, role: userRole };
-        }
-
-        currentUser = matched;
-        document.getElementById('loginOverlay').style.display = 'none';
-        document.getElementById('mainContainer').style.display = 'block';
-        
-        const greeting = document.getElementById('userGreeting');
-        if (greeting) greeting.textContent = `👤 المستخدم: ${matched.username.toUpperCase()} (${matched.role || 'مستخدم'})`;
-
-        applyRolePermissions();
-        prepareNewInvoice();
-        populatePartnerDropdown();
-        updateLowStockAlert();
     }
 
     function applyRolePermissions() {
@@ -1186,7 +1167,7 @@
             managerElements.forEach(el => el.style.display = '');
         } else {
             adminElements.forEach(el => el.style.display = 'none');
-            managerElements.forEach(el => el.style.display = 'none');
+            adminElements.forEach(el => el.style.display = 'none');
         }
     }
 
@@ -1917,7 +1898,7 @@
                         <td style="font-weight:bold;">#${inv.id}</td>
                         <td style="font-weight:bold;">${payTypeTag}</td>
                         <td style="white-space:nowrap; font-weight:bold; font-size:0.75rem;">${formatDateShort(inv.date)}</td>
-                        <td style="text-align:right; font-size:0.75rem; line-height:1.3;">${itemsTextList.join('<br>')}</td>
+                        <td style="text-align:right; font-size:0.75rem; line-line-height:1.3;">${itemsTextList.join('<br>')}</td>
                         <td>${invComm.toFixed(2)} ج.م</td>
                         <td style="font-weight:bold;">${invSell.toFixed(2)} ج.م</td>
                         <td style="font-weight:bold;">${invProfit.toFixed(2)} ج.م</td>
