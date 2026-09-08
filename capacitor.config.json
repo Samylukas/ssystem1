@@ -1,13 +1,6 @@
 {
-  "appId": "com.elsayeh.store",
-  "appName": "El Sayeh Store",
-  "webDir": "www",
-  "bundledWebRuntime": false,
-  "server": {
-    "androidScheme": "https",
-    "allowNavigation": [
-      "script.google.com",
-      "script.googleusercontent.com"
-    ]
-  }
+  "appId": "com.ssystems.c01",
+  "appName": "S-Systems C01",
+  "webDir": ".",
+  "bundledWebRuntime": false
 }
