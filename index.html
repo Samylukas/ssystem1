@@ -81,6 +81,7 @@
             100% { transform: scale(1) rotate(360deg); }
         }
 
+        /* تحريك شارة حرف S بالموقع */
         .s-badge {
             background: linear-gradient(135deg, #00f2fe, #4facfe);
             color: #fff;
@@ -94,19 +95,13 @@
             justify-content: center;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
             font-family: sans-serif;
+            animation: spinPulse 4s infinite linear;
         }
 
-        .spinning-gear {
-            display: inline-block;
-            font-size: 1.4rem;
-            vertical-align: middle;
-            margin: 0 2px;
-            animation: spinGear 6s linear infinite;
-        }
-
-        @keyframes spinGear {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes spinPulse {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
         }
 
         .sync-status { text-align: center; font-size: 0.8rem; font-weight: bold; margin-bottom: 6px; padding: 4px; border-radius: 6px; }
@@ -190,7 +185,7 @@
 <div id="loginOverlay" class="login-overlay">
     <div class="login-card">
         <h2 style="color:#1e3c72; margin-bottom:10px; font-size:1.1rem; display:flex; align-items:center; justify-content:center; gap:6px;">
-            <span class="s-badge">S</span> S-Systems C01
+            S-Systems C01 2026 <span class="s-badge">S</span>
         </h2>
         <p style="font-size:0.78rem; color:#555; margin-bottom:12px;">تسجيل الدخول للنظام</p>
         
@@ -214,7 +209,7 @@
             <button type="button" class="btn btn-red" style="margin-top:0;" onclick="closeApp()">خروج من البرنامج</button>
         </div>
 
-        <div class="footer-signature" style="margin-top:12px;"><span class="s-badge" style="width:20px; height:20px; font-size:12px;">S</span> S-Systems C01 2026</div>
+        <div class="footer-signature" style="margin-top:12px;">S-Systems C01 2026 <span class="s-badge" style="width:20px; height:20px; font-size:12px;">S</span></div>
     </div>
 </div>
 
@@ -284,7 +279,7 @@
         <button class="btn btn-red" style="width:auto; margin:0; padding:3px 6px; font-size:0.7rem;" onclick="logout()">تسجيل الخروج 🚪</button>
     </div>
 
-    <h1><span class="s-badge">S</span> S-Systems C01</h1>
+    <h1>S-Systems C01 <span class="s-badge">S</span></h1>
     <div id="syncIndicator" class="sync-status status-online">🟢 متصل أونلاين</div>
 
     <div id="alertsContainer" class="alerts-bar">
@@ -545,7 +540,7 @@
                 </thead>
                 <tbody id="savedInvoicesBody"></tbody>
             </table></div>
-            <div class="footer-signature" style="margin-top:8px;"><span class="s-badge" style="width:20px; height:20px; font-size:12px;">S</span> S-Systems C01 2026</div>
+            <div class="footer-signature" style="margin-top:8px;">S-Systems C01 2026 <span class="s-badge" style="width:20px; height:20px; font-size:12px;">S</span></div>
         </div>
     </div>
 
@@ -589,7 +584,7 @@
         </div>
     </div>
 
-    <div class="footer-signature"><span class="s-badge" style="width:20px; height:20px; font-size:12px;">S</span> S-Systems C01 2026</div>
+    <div class="footer-signature">S-Systems C01 2026 <span class="s-badge" style="width:20px; height:20px; font-size:12px;">S</span></div>
 </div>
 
 <div id="receiptPrintSection"></div>
@@ -908,13 +903,14 @@
         else document.body.innerHTML = '<div style="text-align:center; padding:50px; font-weight:bold; font-size:1.2rem; color:#1e3c72;">تم إغلاق الجلسة بنجاح. يمكنك إغلاق النافذة الآن.</div>';
     }
 
+    /* تعديل تنسيق التاريخ ليصبح DD/MM/YY */
     function formatDateShort(dateInput) {
         if (!dateInput) return "-";
         let d = new Date(dateInput);
         if (isNaN(d.getTime())) return dateInput.toString().replace(/GMT.*/, '').trim();
         let day = String(d.getDate()).padStart(2, '0');
         let month = String(d.getMonth() + 1).padStart(2, '0');
-        let year = d.getFullYear();
+        let year = String(d.getFullYear()).slice(-2); // أخذ آخر رقمين من السنة YY
         let hours = String(d.getHours()).padStart(2, '0');
         let minutes = String(d.getMinutes()).padStart(2, '0');
         return `${day}/${month}/${year} ${hours}:${minutes}`;
@@ -928,7 +924,7 @@
             if (parts.length === 3) {
                 let day = parts[0].padStart(2, '0');
                 let month = parts[1].padStart(2, '0');
-                let year = parts[2];
+                let year = parts[2].length === 2 ? "20" + parts[2] : parts[2];
                 return `${year}-${month}-${day}`;
             }
         } catch (e) {}
@@ -944,7 +940,7 @@
             if (dateParts.length === 3) {
                 let day = dateParts[0].padStart(2, '0');
                 let month = dateParts[1].padStart(2, '0');
-                let year = dateParts[2];
+                let year = dateParts[2].length === 2 ? "20" + dateParts[2] : dateParts[2];
                 let timePart = parts[1] || "12:00";
                 return `${year}-${month}-${day}T${timePart}`;
             }
@@ -965,7 +961,6 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-        // إدارة ظهور Splash Screen وإخفائها تلقائياً
         setTimeout(() => {
             const splash = document.getElementById('splash-screen');
             if(splash) {
@@ -1288,7 +1283,7 @@
 
         if (!prod.barcode || prod.barcode.trim() === "") {
             let newBarcode = "";
-            do { newBarcode = "2026" + Math.floor(1000 + Math.random() * 9000); } while (isBarcodeExists(newBarcode, prod.n));
+            do { newBarcode = "26" + Math.floor(1000 + Math.random() * 9000); } while (isBarcodeExists(newBarcode, prod.n));
             prod.barcode = newBarcode;
             syncToCloud("updateSingleProduct", prod);
             alert(`✅ تم إصدار باركود جديد للمنتج [${prod.n}]: (${prod.barcode})!`);
@@ -1356,7 +1351,7 @@
         if (!name) return alert('أدخل اسم الصنف أولاً!');
 
         if (!barcode) {
-            do { barcode = "2026" + Math.floor(1000 + Math.random() * 9000); } while (isBarcodeExists(barcode));
+            do { barcode = "26" + Math.floor(1000 + Math.random() * 9000); } while (isBarcodeExists(barcode));
         }
 
         let existingIdx = products.findIndex(p => p.n.trim().toLowerCase() === name.toLowerCase());
@@ -2194,7 +2189,7 @@
 
         let receiptHTML = `
             <div style="font-size:16px; font-weight:bold; margin-bottom:2px; display:flex; align-items:center; justify-content:center; gap:4px;">
-                <span style="background:#000; color:#fff; padding:0 4px; border-radius:3px;">S</span> S-Systems C01
+                S-Systems C01 <span style="background:#000; color:#fff; padding:0 4px; border-radius:3px;">S</span>
             </div>
             <div style="border-top:1px dashed #000; border-bottom:1px dashed #000; padding:4px 0; margin-bottom:6px; margin-top:6px;">
                 <p style="font-size:11px; margin:2px 0;">رقم الفاتورة: <b>#${inv.id}</b></p>
