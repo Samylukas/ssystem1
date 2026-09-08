@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # 1. بناء الـ APK
+  # 1. بناء الـ APK بأبسط طريقة
   build-apk:
     runs-on: ubuntu-latest
     steps:
@@ -27,11 +27,14 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Capacitor CLI & Build Android
+      - name: Create Package & Capacitor Config
         run: |
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
           npx cap init "S-Systems C01" "com.ssystems.c01" --web-dir "."
+
+      - name: Add Android Platform
+        run: |
           npx cap add android
 
       - name: Set up JDK 17
@@ -53,7 +56,7 @@ jobs:
           name: S-Systems-C01-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
 
-  # 2. نشر الويب على GitHub Pages
+  # 2. رفع واستضافة الويب
   deploy-web:
     environment:
       name: github-pages
