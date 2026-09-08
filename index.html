@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>S-Systems C01</title>
+    <title>-Systems C01</title>
     <link rel="manifest" href="manifest.json">
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
@@ -81,27 +81,41 @@
             100% { transform: scale(1) rotate(360deg); }
         }
 
-        /* تحريك شارة حرف S */
-        .s-badge {
-            background: linear-gradient(135deg, #00f2fe, #4facfe);
-            color: #fff;
-            font-weight: bold;
-            font-size: 16px;
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
+        /* تصميم شارة حرف S لتشابه نيزك الـ Splash Screen بالكامل */
+        .s-badge-container {
+            position: relative;
             display: inline-flex;
-            align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            font-family: sans-serif;
-            animation: spinPulse 4s infinite linear;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            background: #0f172a;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
+            vertical-align: middle;
         }
 
-        @keyframes spinPulse {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.1); }
-            100% { transform: rotate(360deg) scale(1); }
+        .s-badge-logo {
+            font-size: 16px;
+            font-weight: 900;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #00f2fe;
+            text-shadow: 0 0 6px #00f2fe;
+            animation: pulseSpin 2.5s infinite ease-in-out;
+            z-index: 2;
+            line-height: 1;
+        }
+
+        .s-badge-trail {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: #00f2fe;
+            border-right-color: #4facfe;
+            animation: meteorRotate 1.2s linear infinite;
+            box-shadow: 0 0 6px rgba(0, 242, 254, 0.6);
         }
 
         .sync-status { text-align: center; font-size: 0.8rem; font-weight: bold; margin-bottom: 6px; padding: 4px; border-radius: 6px; }
@@ -157,7 +171,7 @@
         .total-item { background: #ffffff; padding: 6px 4px; border-radius: 6px; border: 1px solid #bfdbfe; color: #1e3c72; font-weight: bold; }
         .total-item span { display: block; font-weight: bold; font-size: 0.95rem; margin-top: 2px; }
 
-        .footer-signature { text-align: center; margin-top: 15px; padding-top: 8px; border-top: 1px solid #cbd5e1; font-size: 0.75rem; color: #64748b; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .footer-signature { text-align: center; margin-top: 15px; padding-top: 8px; border-top: 1px solid #cbd5e1; font-size: 0.75rem; color: #64748b; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 6px; }
 
         .scanner-box { display: none; background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 8px; position: relative; text-align: center; }
         .camera-div { width: 100%; max-width: 350px; margin: 0 auto; min-height: 180px; }
@@ -168,11 +182,11 @@
             #receiptPrintSection { position: absolute; left: 0; top: 0; width: 80mm; font-family: 'Courier New', monospace; font-size: 12px; text-align: center; direction: rtl; color: #000; }
         }
 
-        /* التنسيق الجديد لضبط هوامش الـ PDF تلقائياً ومنع خروج الجداول */
+        /* التنسيق المطور لضبط هوامش الـ PDF العلوية والسفلية */
         .pdf-export-mode {
             width: 100% !important;
             max-width: 100% !important;
-            padding: 0 !important;
+            padding: 10px 0 !important;
             margin: 0 !important;
         }
 
@@ -208,7 +222,8 @@
 <div id="loginOverlay" class="login-overlay">
     <div class="login-card">
         <h2 style="color:#1e3c72; margin-bottom:10px; font-size:1.1rem; display:flex; align-items:center; justify-content:center; gap:6px;">
-            S-Systems C01 2026 <span class="s-badge">S</span>
+            <div class="s-badge-container"><div class="s-badge-trail"></div><div class="s-badge-logo">S</div></div>
+            -Systems C01 2026
         </h2>
         <p style="font-size:0.78rem; color:#555; margin-bottom:12px;">تسجيل الدخول للنظام</p>
         
@@ -224,7 +239,7 @@
 
         <div style="margin-bottom:12px; text-align:right;">
             <label style="font-size:0.78rem; font-weight:bold; color:#1e3c72;">كلمة المرور:</label>
-            <input type="password" id="entryPassInput" class="search-box" style="text-align:center; margin-top:4px;" placeholder="أدخل كلمة المرور..." onkeypress="if(event.key === 'Enter') validateEntryPassword()">
+            <input type="password" id="entryPassInput" class="search-box" style="text-align:center; margin-top:4px;" placeholder="" onkeypress="if(event.key === 'Enter') validateEntryPassword()">
         </div>
 
         <div style="display:flex; gap:6px;">
@@ -232,7 +247,10 @@
             <button type="button" class="btn btn-red" style="margin-top:0;" onclick="closeApp()">خروج من البرنامج</button>
         </div>
 
-        <div class="footer-signature" style="margin-top:12px;">S-Systems C01 2026 <span class="s-badge" style="width:20px; height:20px; font-size:12px;">S</span></div>
+        <div class="footer-signature" style="margin-top:12px;">
+            <div class="s-badge-container" style="width:22px; height:22px;"><div class="s-badge-trail" style="width:18px; height:18px;"></div><div class="s-badge-logo" style="font-size:10px;">S</div></div>
+            -Systems C01 2026
+        </div>
     </div>
 </div>
 
@@ -240,7 +258,7 @@
     <div class="login-card">
         <h2 style="color:#e74c3c; margin-bottom:10px; font-size:1.1rem;">🔒 انتهاء فترة الاشتراك</h2>
         <p style="font-size:0.8rem; color:#333; margin-bottom:12px;">لقد مضى شهر على استخدام النظام. يرجى أدخال كود التفعيل للشهر الجديد للفتح:</p>
-        <input type="password" id="activationCodeInput" class="search-box" style="text-align:center;" placeholder="أدخل كود التفعيل...">
+        <input type="password" id="activationCodeInput" class="search-box" style="text-align:center;" placeholder="">
         <button type="button" class="btn btn-purple" onclick="verifyActivationCode()">تفعيل النظام 🔑</button>
     </div>
 </div>
@@ -257,7 +275,7 @@
         </div>
         <div class="field-box" style="margin-bottom:10px;">
             <label>المبلغ المسدد (ج.م):</label>
-            <input type="number" id="payCreditAmountInput" placeholder="أدخل المبلغ...">
+            <input type="number" id="payCreditAmountInput" placeholder="">
         </div>
         <div style="display:flex; gap:6px;">
             <button class="btn btn-purple" style="margin-top:0;" onclick="submitCreditPayment()">تأكيد التحصيل 💾</button>
@@ -271,23 +289,23 @@
         <h3 style="color:#1e3c72; margin-bottom:10px; text-align:center; font-size:1rem;">🚚 إضافة / تعديل بيانات المورد</h3>
         <div class="field-box" style="margin-bottom:6px;">
             <label>اسم المورد:</label>
-            <input type="text" id="suppModalName" autocomplete="off" placeholder="اسم المورد بالكامل...">
+            <input type="text" id="suppModalName" autocomplete="off" placeholder="">
         </div>
         <div class="field-box" style="margin-bottom:6px;">
             <label>رقم الهاتف 1:</label>
-            <input type="text" id="suppModalPhone1" placeholder="رقم الهاتف الرئيسي...">
+            <input type="text" id="suppModalPhone1" placeholder="">
         </div>
         <div class="field-box" style="margin-bottom:6px;">
             <label>رقم الهاتف 2:</label>
-            <input type="text" id="suppModalPhone2" placeholder="رقم الهاتف الإضافي...">
+            <input type="text" id="suppModalPhone2" placeholder="">
         </div>
         <div class="field-box" style="margin-bottom:6px;">
             <label>العنوان:</label>
-            <input type="text" id="suppModalAddress" placeholder="عنوان المورد / المحافظة...">
+            <input type="text" id="suppModalAddress" placeholder="">
         </div>
         <div class="field-box" style="margin-bottom:10px;">
             <label>ملاحظات:</label>
-            <input type="text" id="suppModalNotes" placeholder="ملاحظات وشروط التوريد...">
+            <input type="text" id="suppModalNotes" placeholder="">
         </div>
         <div style="display:flex; gap:6px;">
             <button class="btn btn-purple" style="margin-top:0;" onclick="saveSupplierFromModal()">حفظ المورد 💾</button>
@@ -302,7 +320,10 @@
         <button class="btn btn-red" style="width:auto; margin:0; padding:3px 6px; font-size:0.7rem;" onclick="logout()">تسجيل الخروج 🚪</button>
     </div>
 
-    <h1>S-Systems C01 <span class="s-badge">S</span></h1>
+    <h1>
+        <div class="s-badge-container"><div class="s-badge-trail"></div><div class="s-badge-logo">S</div></div>
+        -Systems C01
+    </h1>
     <div id="syncIndicator" class="sync-status status-online">🟢 متصل أونلاين</div>
 
     <div id="alertsContainer" class="alerts-bar">
@@ -347,12 +368,12 @@
                 </div>
                 <div class="field-box customer-credit-field" style="display:none;">
                     <label>اسم العميل (آجل):</label>
-                    <input type="text" id="customerNameInput" list="customersList" autocomplete="off" placeholder="اكتب اسم العميل..." oninput="autoFillCustomerPhone(this.value)">
+                    <input type="text" id="customerNameInput" list="customersList" autocomplete="off" placeholder="" oninput="autoFillCustomerPhone(this.value)">
                     <datalist id="customersList"></datalist>
                 </div>
                 <div class="field-box customer-credit-field" style="display:none;">
                     <label>رقم واتساب العميل (إلزامي للآجل):</label>
-                    <input type="text" id="customerPhoneInput" autocomplete="off" placeholder="01xx/xxx/xxxx" oninput="applyPhoneMask(this)">
+                    <input type="text" id="customerPhoneInput" autocomplete="off" placeholder="" oninput="applyPhoneMask(this)">
                 </div>
                 <div class="field-box">
                     <label>خصم نسبة مئوية (%):</label>
@@ -369,7 +390,7 @@
         </div>
 
         <div style="display:flex; gap:4px; margin-top:8px;">
-            <input type="text" id="searchInput" class="search-box" style="margin-bottom:0;" autocomplete="off" placeholder="امسح الباركود لقراءة الصنف فوراً أو اكتب اسم القطعة... (F4)" oninput="searchProduct()">
+            <input type="text" id="searchInput" class="search-box" style="margin-bottom:0;" autocomplete="off" placeholder="" oninput="searchProduct()">
             <button class="btn btn-purple" style="width:auto; margin-top:0; white-space:nowrap; padding: 0 8px; font-size:0.75rem;" onclick="toggleCameraScanner('sales')">📷 كاميرا (F2)</button>
         </div>
 
@@ -422,7 +443,7 @@
     <!-- 2. تفاصيل المخزون -->
     <div id="stockTab" class="tab-content manager-only">
         <div class="section-title">📦 تفاصيل المخزون والباركود والشركاء</div>
-        <input type="text" id="stockFilterInput" class="search-box" autocomplete="off" placeholder="تصفية باسم القطعة، التصنيف أو الباركود..." oninput="filterStockTable(this.value)">
+        <input type="text" id="stockFilterInput" class="search-box" autocomplete="off" placeholder="" oninput="filterStockTable(this.value)">
 
         <div id="stockScannerContainer" class="scanner-box" style="margin-top:6px;">
             <div id="stockCameraReader" class="camera-div"></div>
@@ -442,23 +463,23 @@
         <div class="section-title">➕ إضافة قطعة غيار جديدة بالنظام</div>
         <div class="card" style="background:#eef7fe;">
             <div class="form-grid">
-                <div class="field-box"><label>اسم القطعة:</label><input type="text" id="newProdName" list="allProductsDatalist" autocomplete="off" placeholder="اسم القطعة..." oninput="autoFillProductFields(this.value)"></div>
+                <div class="field-box"><label>اسم القطعة:</label><input type="text" id="newProdName" list="allProductsDatalist" autocomplete="off" placeholder="" oninput="autoFillProductFields(this.value)"></div>
                 <datalist id="allProductsDatalist"></datalist>
-                <div class="field-box"><label>التصنيف / القسم:</label><input type="text" id="newProdCategory" list="categoriesDatalist" placeholder="فلاتر، فرامل، سيرفيس..."></div>
+                <div class="field-box"><label>التصنيف / القسم:</label><input type="text" id="newProdCategory" list="categoriesDatalist" placeholder=""></div>
                 <datalist id="categoriesDatalist"></datalist>
-                <div class="field-box"><label>المقاس:</label><input type="text" id="newProdSize" placeholder="المقاس..."></div>
-                <div class="field-box"><label>الغرض:</label><input type="text" id="newProdPurpose" placeholder="الغرض..."></div>
+                <div class="field-box"><label>المقاس:</label><input type="text" id="newProdSize" placeholder=""></div>
+                <div class="field-box"><label>الغرض:</label><input type="text" id="newProdPurpose" placeholder=""></div>
                 <div class="field-box"><label>السعر التجاري (ج.م):</label><input type="number" id="newProdPrice" placeholder="0.00"></div>
                 <div class="field-box"><label>سعر البيع (ج.م):</label><input type="number" id="newProdSellPrice" placeholder="0.00"></div>
                 <div class="field-box"><label id="qtyFieldLabel">الكمية المضافة (الواردة):</label><input type="number" id="newProdQty" value="10"></div>
-                <div class="field-box"><label>اسم شريك 1:</label><input type="text" id="newProdPartner1" placeholder="شريك 1..."></div>
-                <div class="field-box"><label>اسم شريك 2:</label><input type="text" id="newProdPartner2" placeholder="شريك 2..."></div>
+                <div class="field-box"><label>اسم شريك 1:</label><input type="text" id="newProdPartner1" placeholder=""></div>
+                <div class="field-box"><label>اسم شريك 2:</label><input type="text" id="newProdPartner2" placeholder=""></div>
                 <div class="field-box"><label>تاريخ الصلاحية:</label><input type="date" id="newProdExpiry"></div>
-                <div class="field-box"><label>اسم المورد:</label><input type="text" id="newProdSupplier" list="suppliersList" autocomplete="off" placeholder="اسم المورد..."></div>
+                <div class="field-box"><label>اسم المورد:</label><input type="text" id="newProdSupplier" list="suppliersList" autocomplete="off" placeholder=""></div>
                 <div class="field-box">
                     <label>الباركود:</label>
                     <div style="display:flex; gap:4px;">
-                        <input type="text" id="newProdBarcode" placeholder="الباركود...">
+                        <input type="text" id="newProdBarcode" placeholder="">
                         <button class="btn btn-purple" style="width:auto; margin:0; padding:0 8px; font-size:0.75rem; white-space:nowrap;" onclick="toggleCameraScanner('addNew')">📷 مسح</button>
                     </div>
                 </div>
@@ -479,7 +500,7 @@
         <div class="section-title">📝 دفتر البيع الآجل وتحصيل ديون العملاء</div>
         <div class="card">
             <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
-                <div style="flex:1;"><input type="text" id="creditSearchCustomer" class="search-box" style="margin-bottom:0;" autocomplete="off" list="customersList" placeholder="ابحث باسم العميل لعرض جميع سحوباته..." oninput="renderCreditReport()"></div>
+                <div style="flex:1;"><input type="text" id="creditSearchCustomer" class="search-box" style="margin-bottom:0;" autocomplete="off" list="customersList" placeholder="" oninput="renderCreditReport()"></div>
                 <div>من: <input type="date" id="creditFromDate" onchange="renderCreditReport()" style="font-size:0.75rem;"></div>
                 <div>إلى: <input type="date" id="creditToDate" onchange="renderCreditReport()" style="font-size:0.75rem;"></div>
                 <button class="btn btn-orange" style="width:auto; margin:0; font-size:0.75rem; padding:4px 8px;" onclick="clearCreditDates()">مسح التواريخ 🧹</button>
@@ -508,7 +529,7 @@
             <button class="btn btn-blue" style="width:auto; margin:0; padding:4px 8px; font-size:0.75rem;" onclick="openSupplierModal()">إدارة الموردين ➕</button>
         </div>
 
-        <input type="text" id="supplierFilterInput" class="search-box" autocomplete="off" placeholder="ابحث باسم المورد أو الهاتف..." oninput="renderSuppliersReport()">
+        <input type="text" id="supplierFilterInput" class="search-box" autocomplete="off" placeholder="" oninput="renderSuppliersReport()">
         
         <div class="table-responsive"><table>
             <thead>
@@ -563,7 +584,10 @@
                 </thead>
                 <tbody id="savedInvoicesBody"></tbody>
             </table></div>
-            <div class="footer-signature" style="margin-top:8px;">S-Systems C01 2026 <span class="s-badge" style="width:20px; height:20px; font-size:12px;">S</span></div>
+            <div class="footer-signature" style="margin-top:8px;">
+                <div class="s-badge-container" style="width:22px; height:22px;"><div class="s-badge-trail" style="width:18px; height:18px;"></div><div class="s-badge-logo" style="font-size:10px;">S</div></div>
+                -Systems C01 2026
+            </div>
         </div>
     </div>
 
@@ -573,7 +597,7 @@
         <div class="card">
             <div class="form-grid">
                 <div class="field-box"><label>النوع:</label><select id="finType"><option value="Expense">مصروفات (-)</option><option value="Revenue">إيرادات إضافية (+)</option></select></div>
-                <div class="field-box"><label>البيان / البند:</label><input type="text" id="finCategory" placeholder="إيجار، كهرباء، صيانة، بضاعة..."></div>
+                <div class="field-box"><label>البيان / البند:</label><input type="text" id="finCategory" placeholder=""></div>
                 <div class="field-box"><label>المبلغ (ج.م):</label><input type="number" id="finAmount" placeholder="0.00"></div>
                 <div class="field-box"><label>التاريخ والوقت:</label><input type="datetime-local" id="finDate"></div>
             </div>
@@ -602,12 +626,15 @@
         <div class="section-title">🔑 إدارة الحسابات وتغيير كلمة المرور</div>
         <div class="card" style="max-width:320px; margin:0 auto;">
             <select id="userSelectPass" class="search-box"></select>
-            <input type="password" id="newAccountPass" class="search-box" placeholder="كلمة المرور الجديدة...">
+            <input type="password" id="newAccountPass" class="search-box" placeholder="">
             <button class="btn btn-purple" onclick="changeUserPasswordSystem()">تحديث كلمة السر أونلاين 💾</button>
         </div>
     </div>
 
-    <div class="footer-signature">S-Systems C01 2026 <span class="s-badge" style="width:20px; height:20px; font-size:12px;">S</span></div>
+    <div class="footer-signature">
+        <div class="s-badge-container" style="width:22px; height:22px;"><div class="s-badge-trail" style="width:18px; height:18px;"></div><div class="s-badge-logo" style="font-size:10px;">S</div></div>
+        -Systems C01 2026
+    </div>
 </div>
 
 <div id="receiptPrintSection"></div>
@@ -2085,11 +2112,12 @@
         element.classList.add('pdf-export-mode');
 
         const opt = {
-            margin:       [4, 4, 4, 4], // تقليل الهوامش لأقصى درجة لاستيعاب كافة الخانات
+            margin:       [10, 5, 10, 5], // إعطاء مسافة متناسقة علوياً وسفلياً بـ 10 مم
             filename:     `S_Systems_C01_Report_${new Date().toISOString().slice(0,10)}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
         };
 
         html2pdf().set(opt).from(element).save().then(() => {
@@ -2192,7 +2220,8 @@
 
         let receiptHTML = `
             <div style="font-size:16px; font-weight:bold; margin-bottom:2px; display:flex; align-items:center; justify-content:center; gap:4px;">
-                S-Systems C01 <span style="background:#000; color:#fff; padding:0 4px; border-radius:3px;">S</span>
+                <div class="s-badge-container" style="width:20px; height:20px;"><div class="s-badge-trail" style="width:16px; height:16px;"></div><div class="s-badge-logo" style="font-size:10px;">S</div></div>
+                -Systems C01
             </div>
             <div style="border-top:1px dashed #000; border-bottom:1px dashed #000; padding:4px 0; margin-bottom:6px; margin-top:6px;">
                 <p style="font-size:11px; margin:2px 0;">رقم الفاتورة: <b>#${inv.id}</b></p>
