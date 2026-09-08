@@ -2,5 +2,12 @@
   "appId": "com.ssystems.c01",
   "appName": "S-Systems C01",
   "webDir": ".",
-  "bundledWebRuntime": false
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "allowNavigation": [
+      "script.google.com",
+      "script.googleusercontent.com"
+    ]
+  }
 }
