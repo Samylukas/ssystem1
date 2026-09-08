@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>El Sayeh Store ⚙️ - مركز السائح لقطع غيار السيارات</title>
+    <title>S-Systems C01</title>
     <link rel="manifest" href="manifest.json">
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
@@ -14,8 +14,88 @@
         html, body { width: 100%; overflow-x: hidden; background-color: #f0f4f8; padding: 4px; color: #1e293b; direction: rtl; }
         
         .app-container { width: 100%; max-width: 100%; margin: 0 auto; background: #fff; padding: 8px; border-radius: 12px; box-shadow: 0 4px 15px rgba(30, 60, 114, 0.08); position: relative; min-height: 98vh; padding-bottom: 30px; overflow-x: hidden; border: 1px solid #cbd5e1; }
-        h1 { text-align: center; color: #1e3c72; margin-bottom: 8px; font-size: 1.1rem; }
+        h1 { text-align: center; color: #1e3c72; margin-bottom: 8px; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
         
+        /* Splash Screen & Logo CSS */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background-color: #0f172a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .s-logo-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 160px;
+            height: 160px;
+        }
+
+        .s-logo {
+            font-size: 80px;
+            font-weight: 900;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #00f2fe;
+            text-shadow: 0 0 20px #00f2fe, 0 0 40px #4facfe;
+            animation: pulseSpin 2.5s infinite ease-in-out;
+            z-index: 2;
+        }
+
+        .meteor-trail {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #00f2fe;
+            border-right-color: #4facfe;
+            animation: meteorRotate 1.2s linear infinite;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+        }
+
+        .splash-title {
+            margin-top: 20px;
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-family: sans-serif;
+        }
+
+        @keyframes meteorRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseSpin {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.15) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        .s-badge {
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            color: #fff;
+            font-weight: bold;
+            font-size: 16px;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            font-family: sans-serif;
+        }
+
         .spinning-gear {
             display: inline-block;
             font-size: 1.4rem;
@@ -81,7 +161,7 @@
         .total-item { background: #ffffff; padding: 6px 4px; border-radius: 6px; border: 1px solid #bfdbfe; color: #1e3c72; font-weight: bold; }
         .total-item span { display: block; font-weight: bold; font-size: 0.95rem; margin-top: 2px; }
 
-        .footer-signature { text-align: center; margin-top: 15px; padding-top: 8px; border-top: 1px solid #cbd5e1; font-size: 0.75rem; color: #64748b; font-weight: bold; }
+        .footer-signature { text-align: center; margin-top: 15px; padding-top: 8px; border-top: 1px solid #cbd5e1; font-size: 0.75rem; color: #64748b; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 4px; }
 
         .scanner-box { display: none; background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 8px; position: relative; text-align: center; }
         .camera-div { width: 100%; max-width: 350px; margin: 0 auto; min-height: 180px; }
@@ -98,9 +178,20 @@
 </head>
 <body>
 
+<!-- Splash Screen -->
+<div id="splash-screen">
+  <div class="s-logo-container">
+    <div class="meteor-trail"></div>
+    <div class="s-logo">S</div>
+  </div>
+  <h1 class="splash-title">S-Systems C01</h1>
+</div>
+
 <div id="loginOverlay" class="login-overlay">
     <div class="login-card">
-        <h2 style="color:#1e3c72; margin-bottom:10px; font-size:1.1rem;"><span class="spinning-gear">⚙️</span> El Sayeh Store</h2>
+        <h2 style="color:#1e3c72; margin-bottom:10px; font-size:1.1rem; display:flex; align-items:center; justify-content:center; gap:6px;">
+            <span class="s-badge">S</span> S-Systems C01
+        </h2>
         <p style="font-size:0.78rem; color:#555; margin-bottom:12px;">تسجيل الدخول للنظام</p>
         
         <div style="margin-bottom:8px; text-align:right;">
@@ -123,7 +214,7 @@
             <button type="button" class="btn btn-red" style="margin-top:0;" onclick="closeApp()">خروج من البرنامج</button>
         </div>
 
-        <div class="footer-signature" style="margin-top:12px;">El Sayeh Store 2026 | D&P Samy Luks</div>
+        <div class="footer-signature" style="margin-top:12px;"><span class="s-badge" style="width:20px; height:20px; font-size:12px;">S</span> S-Systems C01 2026</div>
     </div>
 </div>
 
@@ -193,7 +284,7 @@
         <button class="btn btn-red" style="width:auto; margin:0; padding:3px 6px; font-size:0.7rem;" onclick="logout()">تسجيل الخروج 🚪</button>
     </div>
 
-    <h1><span class="spinning-gear">⚙️</span> El Sayeh Store - مركز السائح لقطع غيار السيارات</h1>
+    <h1><span class="s-badge">S</span> S-Systems C01</h1>
     <div id="syncIndicator" class="sync-status status-online">🟢 متصل أونلاين</div>
 
     <div id="alertsContainer" class="alerts-bar">
@@ -430,7 +521,7 @@
 
         <div id="pdfReportArea">
             <div id="profitBox" class="totals-box" style="margin-bottom:10px;">
-                <h3 style="text-align:center; margin-bottom:6px; font-size:0.9rem;" id="reportSummaryTitle">💵 ملخص تقرير مبيعات وأرباح الفترة - El Sayeh Store</h3>
+                <h3 style="text-align:center; margin-bottom:6px; font-size:0.9rem;" id="reportSummaryTitle">💵 ملخص تقرير مبيعات وأرباح الفترة - S-Systems C01</h3>
                 <div class="totals-grid">
                     <div class="total-item">المبيعات <span id="repTotalSell">0.00 ج.م</span></div>
                     <div class="total-item">التكلفة التجاري <span id="repTotalComm">0.00 ج.م</span></div>
@@ -454,7 +545,7 @@
                 </thead>
                 <tbody id="savedInvoicesBody"></tbody>
             </table></div>
-            <div class="footer-signature" style="margin-top:8px;">El Sayeh Store 2026 | D&P Samy Luks</div>
+            <div class="footer-signature" style="margin-top:8px;"><span class="s-badge" style="width:20px; height:20px; font-size:12px;">S</span> S-Systems C01 2026</div>
         </div>
     </div>
 
@@ -498,7 +589,7 @@
         </div>
     </div>
 
-    <div class="footer-signature">El Sayeh Store 2026 | D&P Samy Luks <span class="spinning-gear" style="font-size: 0.9rem;">⚙️</span></div>
+    <div class="footer-signature"><span class="s-badge" style="width:20px; height:20px; font-size:12px;">S</span> S-Systems C01 2026</div>
 </div>
 
 <div id="receiptPrintSection"></div>
@@ -509,7 +600,7 @@
 </div>
 
 <script>
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdPOS5uci-oEODLHpDhiL44jBcqoAgSfYj83cnAi3o7vZlfXEKtWYKU7DvdtL_Q6uA/exec";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzpa74oppoctXjeM3ermtuZ5vF8LKoSkvijmXcAjkq9NpI_eCgQ5WV3xfL0u8NEEUFzMA/exec";
     
     let cloudUsers = [];
     let currentUser = null, products = [], suppliers = [], invoiceItems = [], savedInvoices = [], savedFinanceEntries = [], invoiceCounter = 1001, activeInvoiceId = 1001;
@@ -648,7 +739,7 @@
             phone = '2' + phone;
         }
 
-        const rawMsg = "مساء الخير يا فندم 🌸\nنود تذكير سيادتكم بموعد سداد الحساب الآجل المستحق لـ مركز السائح لقطع غيار السيارات.\nشاكرين لسيادتكم حسن التعامل والالتزام المعهود، ونتشرف بزيارتكم دائماً! ⚙️";
+        const rawMsg = "مساء الخير يا فندم 🌸\nنود تذكير سيادتكم بموعد سداد الحساب الآجل المستحق لـ S-Systems C01.\nشاكرين لسيادتكم حسن التعامل والالتزام المعهود، ونتشرف بزيارتكم دائماً! ⚙️";
         const message = encodeURIComponent(rawMsg);
         const url = `https://wa.me/${phone}?text=${message}`;
         window.open(url, '_blank');
@@ -874,6 +965,15 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+        // إدارة ظهور Splash Screen وإخفائها تلقائياً
+        setTimeout(() => {
+            const splash = document.getElementById('splash-screen');
+            if(splash) {
+                splash.style.opacity = '0';
+                setTimeout(() => splash.style.display = 'none', 800);
+            }
+        }, 2500);
+
         checkMonthlySubscription();
         fetchCloudData();
 
@@ -929,7 +1029,6 @@
                         populateLoginUsersSelect(); 
                     }
 
-                    // دمج التصنيفات المحفوظة محلياً لعدم استبدالها بـ "عام"
                     if (resData.products) {
                         resData.products.forEach(cloudP => {
                             let localP = products.find(p => p.n.trim().toLowerCase() === cloudP.n.trim().toLowerCase());
@@ -1802,7 +1901,6 @@
                     invSell += (i.sellTotal || 0);
                     invProfit += (i.netProfit || 0);
 
-                    // تجميع مبيعات التصنيفات
                     if (!categoryMap.has(catName)) {
                         categoryMap.set(catName, { qty: 0, sellTotal: 0, netProfit: 0 });
                     }
@@ -1838,7 +1936,6 @@
             }
         });
 
-        // طباعة التقرير المجمع للتصنيفات
         if (catTbody) {
             if (categoryMap.size === 0) {
                 catTbody.innerHTML = '<tr><td colspan="4">لا توجد مبيعات مسجلة للتصنيفات في هذه الفترة</td></tr>';
@@ -1991,7 +2088,7 @@
 
         const opt = {
             margin:       [10, 8, 10, 8],
-            filename:     `El_Sayeh_Store_Report_${new Date().toISOString().slice(0,10)}.pdf`,
+            filename:     `S_Systems_C01_Report_${new Date().toISOString().slice(0,10)}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -2002,12 +2099,10 @@
         });
     }
 
-    // دالة طباعة الباركود بعرض 29mm x 15mm وتوليد الـ SVG محلياً مسبقاً لمنع أي اختفاء
     function printBarcodeLabel(prodName) {
         const prod = products.find(p => p.n === prodName);
         if (!prod || !prod.barcode) return alert("⚠️ هذا المنتج لا يملك باركود بعد!");
 
-        // توليد الباركود محلياً بداخل العنصر الخفي أولاً لاستخراج كود SVG صريح وتأمين الطباعة
         const tempSvg = document.getElementById("tempBarcodeSvg");
         JsBarcode(tempSvg, prod.barcode, {
             format: "CODE128",
@@ -2075,7 +2170,7 @@
             </style></head>
             <body>
                 <div class="label-card">
-                    <div class="store-name">El Sayeh Store ⚙️</div>
+                    <div class="store-name">S-Systems C01</div>
                     <div class="barcode-area">
                         ${svgContent}
                     </div>
@@ -2098,9 +2193,10 @@
         let formattedDate = formatDateShort(inv.date);
 
         let receiptHTML = `
-            <div style="font-size:16px; font-weight:bold; margin-bottom:2px;"><span class="spinning-gear" style="font-size: 14px;">⚙️</span> El Sayeh Store</div>
-            <div style="font-size:12px; margin-bottom:6px;">مركز السائح لقطع غيار السيارات</div>
-            <div style="border-top:1px dashed #000; border-bottom:1px dashed #000; padding:4px 0; margin-bottom:6px;">
+            <div style="font-size:16px; font-weight:bold; margin-bottom:2px; display:flex; align-items:center; justify-content:center; gap:4px;">
+                <span style="background:#000; color:#fff; padding:0 4px; border-radius:3px;">S</span> S-Systems C01
+            </div>
+            <div style="border-top:1px dashed #000; border-bottom:1px dashed #000; padding:4px 0; margin-bottom:6px; margin-top:6px;">
                 <p style="font-size:11px; margin:2px 0;">رقم الفاتورة: <b>#${inv.id}</b></p>
                 <p style="font-size:11px; margin:2px 0;">نوع الدفع: ${inv.paymentType === 'credit' ? 'آجل ('+inv.customerName+')' : 'نقدي'}</p>
                 <p style="font-size:11px; margin:2px 0;">التاريخ: ${formattedDate}</p>
@@ -2135,7 +2231,7 @@
                 <h3 style="text-align:center; font-size:14px; margin:4px 0;">الإجمالي النهائي: ${inv.totalEGP.toFixed(2)} ج.م</h3>
             </div>
             <p style="font-size:10px; margin-top:8px;">شكراً لزيارتكم! نتشرف بتميزكم دائماً</p>
-            <div style="font-size:8px; color:#555; margin-top:4px;">El Sayeh Store 2026 | D&P Samy Luks</div>
+            <div style="font-size:8px; color:#555; margin-top:4px;">S-Systems C01 2026</div>
         `;
 
         const printSec = document.getElementById('receiptPrintSection');
