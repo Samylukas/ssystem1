@@ -1,86 +1,59 @@
-name: Build Android APK
+name: Build APK and Deploy Web
 
 on:
   push:
     branches:
       - main
-      - master
-  workflow_dispatch:
 
 jobs:
-  build:
+  # 1. بناء تطبيق الأندرويد APK
+  build-apk:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 22
+          node-version: '18'
 
-      - name: Setup Java JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '21'
+      - name: Install Dependencies
+        run: npm install
 
-      - name: Prepare Web Directory
+      - name: Build Android APK
         run: |
-          mkdir -p www
-          cp index.html www/
-
-      - name: Install Dependencies & Capacitor
-        run: |
-          npm init -y
-          npm install @capacitor/core@latest @capacitor/cli@latest @capacitor/android@latest @capacitor/barcode-scanner@latest --legacy-peer-deps
-
-      - name: Create Capacitor Config
-        run: |
-          cat <<EOF > capacitor.config.json
-          {
-            "appId": "com.elsayeh.store",
-            "appName": "El Sayeh Store",
-            "webDir": "www",
-            "bundledWebRuntime": false,
-            "server": {
-              "androidScheme": "https",
-              "allowNavigation": [
-                "script.google.com",
-                "script.googleusercontent.com"
-              ]
-            }
-          }
-          EOF
-
-      - name: Add Android Platform
-        run: |
-          npx cap add android
-
-      - name: Grant Cleartext Traffic & Permissions
-        run: |
-          MANIFEST_PATH="android/app/src/main/AndroidManifest.xml"
-          sed -i '/<application/s/$/ android:usesCleartextTraffic="true"/' $MANIFEST_PATH
-          sed -i '/<application/i \    <uses-permission android:name="android.permission.INTERNET" />\n    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />\n    <uses-permission android:name="android.permission.CAMERA" />\n    <uses-feature android:name="android.hardware.camera" />' $MANIFEST_PATH
-
-      - name: Set Min SDK Version to 26
-        run: |
-          sed -i 's/minSdkVersion = 22/minSdkVersion = 26/g' android/variables.gradle || true
-          sed -i 's/minSdkVersion = 24/minSdkVersion = 26/g' android/variables.gradle || true
-
-      - name: Sync Capacitor Android
-        run: |
-          npx cap sync android
-
-      - name: Build Android APK (Gradle)
-        run: |
+          npx cap sync
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
-          name: El-Sayeh-Store-APK
+          name: S-Systems-C01-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+  # 2. نشر واستضافة الويب
+  deploy-web:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
