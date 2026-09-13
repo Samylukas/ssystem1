@@ -705,7 +705,7 @@
         }
     }
 
-    // Precise Reports Function Matching Google Sheet Columns
+    // Smart Fallback Parsing Reports Function
     function fetchReports() {
         const type = document.getElementById('reportType').value;
         const target = (document.getElementById('reportTarget').value || "").toLowerCase().trim();
@@ -729,9 +729,10 @@
                 if (d >= fDate && d <= tDate) {
                     const cName = (t.client || "").trim();
                     const pName = (t.driver || "").trim();
-                    const tName = (t.trip || "").trim();
-                    const rev = parseFloat(t.revenue || 0);
-                    const fee = parseFloat(t.fee || 0);
+                    // استخدام القراءة الآمنة الذكية لاسم المشوار
+                    const tName = (t.trip || t.trip_name || "").trim();
+                    const rev = parseFloat(t.revenue || t.amount || 0);
+                    const fee = parseFloat(t.fee || t.driver_fee || 0);
 
                     if (type === 'client' && cName.toLowerCase() === target) {
                         res.push({ date: t.date, desc: tName, amt: rev });
