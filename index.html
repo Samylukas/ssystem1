@@ -91,10 +91,10 @@
         .master-card { background: #f9fbfd; border: 1px solid #e1e8ed; padding: 15px; border-radius: 10px; width: 100%; overflow: hidden; }
 
         .report-print-container { background: #fff; padding: 10px; border-radius: 8px; width: 100%; overflow-x: auto; } 
-        .report-title-header { text-align: center; color: #1e3c72; margin-bottom: 5px; font-size: 1.3rem; display: none; border-bottom: 2px solid #1e3c72; padding-bottom: 8px; font-weight: bold; }
+        .report-title-header { text-align: center; color: #1e3c72; margin-bottom: 15px; font-size: 1.4rem; display: none; border-bottom: 3px solid #f39c12; padding-bottom: 8px; font-weight: bold; }
         #chartContainer { max-width: 100%; margin: 15px auto; height: 300px; display: none; }
 
-        /* Ultra-Clean Invoice Print Styling */
+        /* Ultra-Premium Invoice & Report Print Styling */
         @media print {
             body { background: #fff !important; }
             body * { visibility: hidden; }
@@ -103,10 +103,10 @@
             .scroll-btn-group, .nav-tabs, .header-bar, .action-buttons, .grid-form, #chartContainer { display: none !important; }
             
             #reportPrintArea table { width: 100% !important; border-collapse: collapse !important; margin-top: 15px; font-size: 11pt; }
-            #reportPrintArea th { background-color: #1e3c72 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 10px; border: 1px solid #1e3c72 !important; font-weight: bold; }
-            #reportPrintArea td { padding: 8px; border: 1px solid #2c3e50 !important; text-align: center; color: #000; }
+            #reportPrintArea th { background-color: #1e3c72 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 10px; border: 1.5px solid #1e3c72 !important; font-weight: bold; }
+            #reportPrintArea td { padding: 8px; border: 1px solid #333 !important; text-align: center; color: #000; font-weight: 500; }
             #reportPrintArea .total-row td { background-color: #f39c12 !important; color: white !important; font-weight: bold; font-size: 13pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .report-title-header { color: #1e3c72 !important; font-size: 16pt !important; text-align: center; margin-bottom: 15px; border-bottom: 3px solid #f39c12 !important; padding-bottom: 8px; }
+            .report-title-header { color: #1e3c72 !important; font-size: 16pt !important; text-align: center; margin-bottom: 15px; border-bottom: 3px solid #f39c12 !important; padding-bottom: 8px; display: block !important; }
             @page { margin: 1cm; size: A4 portrait; }
         }
     </style>
@@ -392,8 +392,8 @@
     // Translation System
     let currentLang = 'ar';
     const dict = {
-        'en': { username:"Username:", password:"Password:", logout:"Logout", dash_rev:"Monthly Profit (EGP)", dash_trips:"Monthly Trips", dash_top:"Top Partner", tab_add:"📝 Add Trip", tab_masters:"⚙️ Masters", tab_fin:"💵 Finance", tab_mnt:"🔧 Maintenance", tab_rep:"📊 Reports", add_title:"📝 Add New Trip", client:"Client:", driver:"Partner:", vehicle:"Vehicle Type:", v_limo:"Limousine", v_micro:"Microbus", v_coaster:"Coaster", v_bus:"Bus", trip:"Trip Name:", date:"Date & Time:", notes:"Notes:", rev_client:"💰 Revenue (Client):", fee_driver:"💵 Partner Fee:", net:"Net Commission:", save_trip:"Save Trip 💾", recent_trips:"🕒 Recent Trips", rev:"Rev", fee:"Fee", lbl_clients:"👥 Clients List", lbl_partners:"🤝 Partners & Phones", rep_type:"Type", rep_cat:"Category", rep_amt:"Amount", rep_loc:"Location", rep_odo:"Odometer", rep_type_select:"Report Type:", target:"Target:", rep_from:"From Date:", rep_to:"To Date:", btn_search:"Search 🔍", btn_print:"Print/PDF 📄", opt_client:"Client Report", opt_driver:"Partner Report", opt_trip:"Trip Report", opt_analysis:"Trips Analysis Chart", opt_c_agg:"Clients Aggregated", opt_p_agg:"Partners Aggregated", opt_fin:"Finance Report", opt_mnt:"Maintenance Report", th_num:"#", th_desc:"Description", th_tot:"Total Balance" },
-        'ar': { username:"اسم المستخدم:", password:"كلمة المرور:", logout:"خروج", dash_rev:"أرباح الشهر (EGP)", dash_trips:"عدد مشاوير الشهر", dash_top:"نجم الشهر (شريك)", tab_add:"📝 إضافة مشوار", tab_masters:"⚙️ الإعدادات", tab_fin:"💵 المالية", tab_mnt:"🔧 الصيانة", tab_rep:"📊 التقارير", add_title:"📝 إضافة مشوار جديد", client:"العميل:", driver:"الشريك (السائق):", vehicle:"نوع السيارة:", v_limo:"ليموزين / ملاكي", v_micro:"ميكروباص", v_coaster:"كوستر / ميني باص", v_bus:"أتوبيس", trip:"اسم المشوار:", date:"التاريخ والوقت:", notes:"ملاحظات:", rev_client:"💰 حساب العميل (EGP):", fee_driver:"💵 حساب الشريك (EGP):", net:"صافي العمولة:", save_trip:"حفظ المشوار 💾", recent_trips:"🕒 أحدث المشاوير", rev:"حساب", fee:"شريك", lbl_clients:"👥 قائمة العملاء", lbl_partners:"🤝 الشركاء والهواتف", rep_type:"النوع", rep_cat:"التصنيف", rep_amt:"المبلغ", rep_loc:"المكان", rep_odo:"العداد", rep_type_select:"نوع التقرير:", target:"الهدف:", rep_from:"من تاريخ:", rep_to:"إلى تاريخ:", btn_search:"بحث 🔍", btn_print:"طباعة/PDF 📄", opt_client:"تقرير عميل", opt_driver:"تقرير شريك", opt_trip:"تقرير مشوار", opt_analysis:"تحليل المشاوير", opt_c_agg:"إجمالي العملاء", opt_p_agg:"إجمالي الشركاء", opt_fin:"التقرير المالي", opt_mnt:"تقرير الصيانة", th_num:"#", th_desc:"البيان / الوصف", th_tot:"الإجمالي" }
+        'en': { username:"Username:", password:"Password:", logout:"Logout", dash_rev:"Monthly Profit (EGP)", dash_trips:"Monthly Trips", dash_top:"Top Partner", tab_add:"📝 Add Trip", tab_masters:"⚙️ Masters", tab_fin:"💵 Finance", tab_mnt:"🔧 Maintenance", tab_rep:"📊 Reports", add_title:"📝 Add New Trip", client:"Client:", driver:"Partner:", vehicle:"Vehicle Type:", v_limo:"Limousine", v_micro:"Microbus", v_coaster:"Coaster", v_bus:"Bus", trip:"Trip Name:", date:"Date & Time:", notes:"Notes:", rev_client:"💰 Revenue (Client):", fee_driver:"💵 Partner Fee:", net:"Net Commission:", save_trip:"Save Trip 💾", recent_trips:"🕒 Recent Trips", rev:"Rev", fee:"Fee", lbl_clients:"👥 Clients List", lbl_partners:"🤝 Partners & Phones", rep_type:"Type", rep_cat:"Category", rep_amt:"Amount", rep_loc:"Location", rep_odo:"Odometer", rep_type_select:"Report Type:", target:"Target:", rep_from:"From Date:", rep_to:"To Date:", btn_search:"Search 🔍", btn_print:"Print/PDF 📄", opt_client:"Client Report", opt_driver:"Partner Report", opt_trip:"Trip Report", opt_analysis:"Trips Analysis Chart", opt_c_agg:"Clients Aggregated", opt_p_agg:"Partners Aggregated", opt_fin:"Finance Report", opt_mnt:"Maintenance Report", th_num:"#", th_desc:"Description / Trip", th_tot:"Total Balance" },
+        'ar': { username:"اسم المستخدم:", password:"كلمة المرور:", logout:"خروج", dash_rev:"أرباح الشهر (EGP)", dash_trips:"عدد مشاوير الشهر", dash_top:"نجم الشهر (شريك)", tab_add:"📝 إضافة مشوار", tab_masters:"⚙️ الإعدادات", tab_fin:"💵 المالية", tab_mnt:"🔧 الصيانة", tab_rep:"📊 التقارير", add_title:"📝 إضافة مشوار جديد", client:"العميل:", driver:"الشريك (السائق):", vehicle:"نوع السيارة:", v_limo:"ليموزين / ملاكي", v_micro:"ميكروباص", v_coaster:"كوستر / ميني باص", v_bus:"أتوبيس", trip:"اسم المشوار:", date:"التاريخ والوقت:", notes:"ملاحظات:", rev_client:"💰 حساب العميل (EGP):", fee_driver:"💵 حساب الشريك (EGP):", net:"صافي العمولة:", save_trip:"حفظ المشوار 💾", recent_trips:"🕒 أحدث المشاوير", rev:"حساب", fee:"شريك", lbl_clients:"👥 قائمة العملاء", lbl_partners:"🤝 الشركاء والهواتف", rep_type:"النوع", rep_cat:"التصنيف", rep_amt:"المبلغ", rep_loc:"المكان", rep_odo:"العداد", rep_type_select:"نوع التقرير:", target:"الهدف:", rep_from:"من تاريخ:", rep_to:"إلى تاريخ:", btn_search:"بحث 🔍", btn_print:"طباعة/PDF 📄", opt_client:"تقرير عميل", opt_driver:"تقرير شريك", opt_trip:"تقرير مشوار", opt_analysis:"تحليل المشاوير", opt_c_agg:"إجمالي العملاء", opt_p_agg:"إجمالي الشركاء", opt_fin:"التقرير المالي", opt_mnt:"تقرير الصيانة", th_num:"#", th_desc:"البيان / المشوار", th_tot:"الإجمالي" }
     };
 
     function toggleLang() {
@@ -509,7 +509,6 @@
         if(userRole !== 'Admin') return;
         let mRev = 0; let mCount = 0; let driverCounts = {};
         
-        // Smart calculations: sum all recent trips in the system
         recentTripsDB.forEach(t => {
             mRev += parseFloat(t.revenue) || 0; 
             mCount++;
@@ -706,6 +705,7 @@
         }
     }
 
+    // Fixed Correct Mapping for Reports Logic
     function fetchReports() {
         const type = document.getElementById('reportType').value;
         const target = (document.getElementById('reportTarget').value||"").toLowerCase();
@@ -720,10 +720,21 @@
             recentTripsDB.forEach(t => {
                 const d = (t.date||"").split(' ')[0];
                 if(d >= fDate && d <= tDate) {
-                    if(type==='client' && (t.client||"").toLowerCase()===target) res.push({date:t.date, desc:t.trip, amt:t.revenue});
-                    else if(type==='driver' && (t.driver||"").toLowerCase()===target) res.push({date:t.date, desc:t.trip, amt:t.fee});
-                    else if(type==='trips') res.push({date:t.date, desc:`${t.client} - ${t.driver}`, amt:t.revenue});
-                    else if(type==='trip_detailed' && (t.trip||"").toLowerCase()===target) res.push({date:t.date, desc:t.client, amt:t.revenue});
+                    const cName = (t.client||"").trim();
+                    const pName = (t.driver||"").trim();
+                    const tName = (t.trip||"").trim();
+                    const rev = parseFloat(t.revenue) || 0;
+                    const fee = parseFloat(t.fee) || 0;
+
+                    if(type==='client' && cName.toLowerCase() === target) {
+                        res.push({date: t.date, desc: tName, amt: rev});
+                    } else if(type==='driver' && pName.toLowerCase() === target) {
+                        res.push({date: t.date, desc: tName, amt: fee});
+                    } else if(type==='trips') {
+                        res.push({date: t.date, desc: `${tName} (${cName} - ${pName})`, amt: rev});
+                    } else if(type==='trip_detailed' && tName.toLowerCase() === target) {
+                        res.push({date: t.date, desc: `${cName} / ${pName}`, amt: rev});
+                    }
                 }
             });
         }
@@ -733,21 +744,31 @@
         
         if(type === 'finance') {
             document.querySelector('#reportsTable thead').innerHTML = `<tr><th>${dL.th_num}</th><th>${dL.date}</th><th>${dL.rep_type}</th><th>${dL.rep_cat}</th><th>${dL.rep_amt}</th></tr>`;
-            res.forEach((r,i) => { tot += (r.type==='Revenue'?parseFloat(r.amount):-parseFloat(r.amount)); tbody.innerHTML += `<tr><td>${i+1}</td><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.type}</td><td>${r.category}</td><td>${r.amount}</td></tr>`; });
+            res.forEach((r,i) => { 
+                tot += (r.type==='Revenue'?parseFloat(r.amount):-parseFloat(r.amount)); 
+                tbody.innerHTML += `<tr><td>${i+1}</td><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.type}</td><td>${r.category}</td><td style="font-weight:bold;">${parseFloat(r.amount).toFixed(2)}</td></tr>`; 
+            });
             tbody.innerHTML += `<tr class="total-row"><td colspan="4">${dL.th_tot}</td><td style="direction:ltr;">${tot.toFixed(2)}</td></tr>`;
         } else if (type === 'maintenance') {
             document.querySelector('#reportsTable thead').innerHTML = `<tr><th>${dL.th_num}</th><th>${dL.date}</th><th>${dL.rep_type}</th><th>${dL.rep_loc}</th><th>${dL.rep_amt}</th></tr>`;
-            res.forEach((r,i) => { tot += parseFloat(r.amount); tbody.innerHTML += `<tr><td>${i+1}</td><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.type}</td><td>${r.location}</td><td>${r.amount}</td></tr>`; });
+            res.forEach((r,i) => { 
+                tot += parseFloat(r.amount); 
+                tbody.innerHTML += `<tr><td>${i+1}</td><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.type}</td><td>${r.location}</td><td style="font-weight:bold;">${parseFloat(r.amount).toFixed(2)}</td></tr>`; 
+            });
             tbody.innerHTML += `<tr class="total-row"><td colspan="4">${dL.th_tot}</td><td style="direction:ltr;">${tot.toFixed(2)}</td></tr>`;
         } else {
             document.querySelector('#reportsTable thead').innerHTML = `<tr><th>${dL.th_num}</th><th>${dL.date}</th><th>${dL.th_desc}</th><th>${dL.rep_amt}</th></tr>`;
-            res.forEach((r,i) => { tot += parseFloat(r.amt); tbody.innerHTML += `<tr><td>${i+1}</td><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.desc}</td><td>${r.amt}</td></tr>`; });
+            res.forEach((r,i) => { 
+                tot += parseFloat(r.amt); 
+                tbody.innerHTML += `<tr><td>${i+1}</td><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.desc}</td><td style="font-weight:bold;">${parseFloat(r.amt).toFixed(2)}</td></tr>`; 
+            });
             tbody.innerHTML += `<tr class="total-row"><td colspan="3">${dL.th_tot}</td><td style="direction:ltr;">${tot.toFixed(2)}</td></tr>`;
         }
         
-        document.getElementById('printReportTitle').innerHTML = `${dL.tab_rep}: ${target.toUpperCase()} (${fDate} ➡ ${tDate})`; 
+        document.getElementById('printReportTitle').innerHTML = `🚘 ${dL.tab_rep}: ${target.toUpperCase()} <br><span style="font-size:10pt; color:#666;">(${fDate} ➡ ${tDate})</span>`; 
         document.getElementById('printReportTitle').style.display = 'block';
     }
 </script>
 </body>
 </html>
+
