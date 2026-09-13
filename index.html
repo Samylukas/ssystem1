@@ -17,6 +17,13 @@
         .splash-logo { font-size: 5rem; margin-bottom: 10px; animation: driveForward 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         .splash-title { font-size: 2.2rem; font-weight: bold; margin-bottom: 15px; }
 
+        /* Activation Overlay */
+        #activationOverlay { position: fixed; inset: 0; background: linear-gradient(135deg, #1e3c72, #2a5298); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999999; display: none; }
+        .activation-card { background: #fff; padding: 40px 30px; border-radius: 16px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        .activation-card h2 { color: #e74c3c; margin-bottom: 15px; font-size: 1.8rem; }
+        .activation-card p { margin-bottom: 25px; font-weight: bold; color: #34495e; font-size: 1rem; line-height: 1.5; }
+        .activation-card input { width: 100%; padding: 12px; border: 2px solid #bdc3c7; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: bold; font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; outline: none; transition: 0.3s; }
+
         /* Login Screen */
         #loginOverlay { position: fixed; inset: 0; background: linear-gradient(135deg, rgba(30,60,114,0.95), rgba(42,82,152,0.95)); display: flex; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease; visibility: hidden; opacity: 0; }
         .login-card { background: #ffffff; padding: 35px 25px; border-radius: 16px; text-align: center; width: 90%; max-width: 380px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
@@ -30,7 +37,7 @@
         .network-sync { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
         .network-offline { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 
-        /* Dashboard specific */
+        /* Dashboard Cards */
         .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .dash-card { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .dash-card h4 { margin-bottom: 10px; font-size: 1rem; color: #eafaf1; }
@@ -60,18 +67,6 @@
         .pass-toggle-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; }
         html[dir="rtl"] .pass-toggle-btn { right: auto; left: 10px; }
 
-        .currency-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; background: #f1f8ff; padding: 15px; border-radius: 10px; margin-top: 10px; border: 1px solid #cce5ff; width: 100%;}
-        @media (max-width: 600px) { .currency-grid { grid-template-columns: 1fr 1fr; } }
-        
-        .currency-box { text-align: center; }
-        .currency-box label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #1e3c72; }
-        .currency-box input { width: 100%; padding: 10px; border: 1px solid #a4b0be; border-radius: 6px; text-align: center; font-weight: bold; }
-
-        .summary-box { margin-top:10px; padding:10px; border-radius:8px; display:inline-block; border: 1px solid; }
-        .summary-rev { background:#eafaf1; border-color:#27ae60; color:#27ae60; }
-        
-        .action-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 15px; }
-
         .btn { border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center; font-size: 0.9rem; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s;}
         .btn:disabled { background: #95a5a6; cursor: not-allowed; }
         .btn-green { background: #27ae60; } .btn-blue { background: #1e3c72; } .btn-red { background: #e74c3c; } 
@@ -86,22 +81,33 @@
         .toast { color: white; padding: 15px; border-radius: 8px; font-weight: bold; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         
         .table-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 8px; border: 1px solid #eee; -webkit-overflow-scrolling: touch; }
-        table { width: 100%; border-collapse: collapse; background: #fff; text-align: center; white-space: nowrap; }
-        th, td { padding: 10px 8px; border-bottom: 1px solid #eee; text-align: center; font-size: 0.85rem; }
+        table { width: 100%; border-collapse: collapse; background: #fff; text-align: center; white-space: nowrap; font-size: 0.85rem; }
+        th, td { padding: 10px 8px; border-bottom: 1px solid #eee; text-align: center; }
         th { background: #f39c12; color: white; position: sticky; top: 0; font-weight: 600; }
         .total-row { background: #eafaf1; font-weight: bold; font-size: 1rem; text-align: left;}
         html[dir="rtl"] .total-row { text-align: right; }
         
+        .master-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; width: 100%; }
+        .master-card { background: #f9fbfd; border: 1px solid #e1e8ed; padding: 15px; border-radius: 10px; width: 100%; overflow: hidden; }
+
         .report-print-container { background: #fff; padding: 10px; border-radius: 8px; width: 100%; overflow-x: auto; } 
-        .report-print-container table { font-size: 0.75rem; border: 1px solid #1e3c72; width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .report-print-container table th { background: #fdf5e6 !important; color: #1e3c72 !important; border: 1px solid #1e3c72; } 
-        .report-print-container table td { border: 1px solid #1e3c72; color: #000; }
-        
+        .report-title-header { text-align: center; color: #1e3c72; margin-bottom: 5px; font-size: 1.3rem; display: none; border-bottom: 2px solid #1e3c72; padding-bottom: 8px; font-weight: bold; }
+        #chartContainer { max-width: 100%; margin: 15px auto; height: 300px; display: none; }
+
+        /* Ultra-Clean Invoice Print Styling */
         @media print {
+            body { background: #fff !important; }
             body * { visibility: hidden; }
             #reportPrintArea, #reportPrintArea * { visibility: visible; }
-            #reportPrintArea { position: absolute; left: 0; top: 0; width: 100%; }
-            .scroll-btn-group, .nav-tabs, .header-bar { display: none !important; }
+            #reportPrintArea { position: absolute; left: 0; top: 0; width: 100%; padding: 0; margin: 0; }
+            .scroll-btn-group, .nav-tabs, .header-bar, .action-buttons, .grid-form, #chartContainer { display: none !important; }
+            
+            #reportPrintArea table { width: 100% !important; border-collapse: collapse !important; margin-top: 15px; font-size: 11pt; }
+            #reportPrintArea th { background-color: #1e3c72 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 10px; border: 1px solid #1e3c72 !important; font-weight: bold; }
+            #reportPrintArea td { padding: 8px; border: 1px solid #2c3e50 !important; text-align: center; color: #000; }
+            #reportPrintArea .total-row td { background-color: #f39c12 !important; color: white !important; font-weight: bold; font-size: 13pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .report-title-header { color: #1e3c72 !important; font-size: 16pt !important; text-align: center; margin-bottom: 15px; border-bottom: 3px solid #f39c12 !important; padding-bottom: 8px; }
+            @page { margin: 1cm; size: A4 portrait; }
         }
     </style>
 </head>
@@ -111,6 +117,15 @@
 <div class="scroll-btn-group">
     <button class="scroll-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">⏫</button>
     <button class="scroll-btn" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})">⏬</button>
+</div>
+
+<div id="activationOverlay">
+    <div class="activation-card">
+        <h2>⚠️ انتهت الفترة التجريبية</h2>
+        <p>لقد انتهت فترة الـ 30 يوماً المجانية. يرجى إدخال كود التفعيل الخاص بالبرنامج للاستمرار.</p>
+        <input type="text" id="activationCodeInput" placeholder="أدخل كود التفعيل..." autocomplete="off">
+        <button onclick="verifyActivation()" class="btn btn-green" style="width: 100%; font-size: 1.1rem; padding: 12px;">تفعيل 🔓</button>
+    </div>
 </div>
 
 <div id="splashScreen">
@@ -140,7 +155,7 @@
         </div>
     </div>
 
-    <!-- Quick Dashboard (Admin Only) -->
+    <!-- Dashboard -->
     <div id="quickDashboard" class="dashboard-grid admin-only">
         <div class="dash-card"><h4 data-tr="dash_rev">💰 أرباح الشهر (EGP)</h4><h2 id="dashRev">0.00</h2></div>
         <div class="dash-card"><h4 data-tr="dash_trips">🚘 مشاوير الشهر</h4><h2 id="dashTrips">0</h2></div>
@@ -206,60 +221,60 @@
             <h3 style="color:#1e3c72; border-bottom: 2px solid #f39c12; padding-bottom:5px;" data-tr="recent_trips">🕒 Recent Trips</h3>
             <div class="table-responsive">
                 <table id="recentTripsTable" style="width:100%;">
-                    <thead><tr><th>#</th><th data-tr="date">Date</th><th data-tr="client">Client</th><th data-tr="driver">Partner</th><th data-tr="vehicle">Vehicle</th><th data-tr="trip">Trip</th><th data-tr="rev">Rev</th><th data-tr="fee">Fee</th><th>Action</th></tr></thead>
+                    <thead><tr><th data-tr="th_num">#</th><th data-tr="date">Date</th><th data-tr="client">Client</th><th data-tr="driver">Partner</th><th data-tr="vehicle">Vehicle</th><th data-tr="trip">Trip</th><th data-tr="rev">Rev</th><th data-tr="fee">Fee</th><th>Action</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Tab: Data Masters (Admin Only) -->
+    <!-- Tab: Masters -->
     <div id="mastersTab" class="tab-content admin-only">
         <div class="card">
-            <h2 class="section-title">⚙️ Master Data Management</h2>
+            <h2 class="section-title" data-tr="tab_masters">⚙️ Master Data Management</h2>
             <div class="master-grid">
                 <!-- Clients -->
                 <div class="master-card">
-                    <h3>👥 Clients</h3>
+                    <h3 data-tr="lbl_clients">👥 Clients</h3>
                     <div style="display:flex; gap:8px; margin-bottom:10px;">
-                        <input type="text" id="mClientName" placeholder="Client Name..." style="flex:1; padding:8px; border-radius:6px; border:1px solid #ccc;">
+                        <input type="text" id="mClientName" placeholder="..." style="flex:1; padding:8px; border-radius:6px; border:1px solid #ccc;">
                         <button id="addClientBtn" class="btn btn-green" onclick="addMasterItem('client', this)">Add</button>
                     </div>
                     <div class="table-responsive" style="max-height:250px;">
-                        <table id="mClientTable" style="width:100%;"><thead><tr><th>Client Name</th><th>Action</th></tr></thead><tbody></tbody></table>
+                        <table id="mClientTable" style="width:100%;"><thead><tr><th data-tr="th_num">#</th><th data-tr="client">Client Name</th><th>Action</th></tr></thead><tbody></tbody></table>
                     </div>
                 </div>
 
-                <!-- Partners (Drivers) with Phone -->
+                <!-- Partners -->
                 <div class="master-card">
-                    <h3>🤝 Partners & Phones</h3>
+                    <h3 data-tr="lbl_partners">🤝 Partners & Phones</h3>
                     <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:10px;">
-                        <input type="text" id="mDriverName" placeholder="Partner Name..." style="padding:8px; border-radius:6px; border:1px solid #ccc;">
+                        <input type="text" id="mDriverName" placeholder="..." style="padding:8px; border-radius:6px; border:1px solid #ccc;">
                         <input type="text" id="mDriverPhone" placeholder="Phone (e.g. 201xxxx)" style="padding:8px; border-radius:6px; border:1px solid #ccc; direction:ltr;">
                         <button id="addDriverBtn" class="btn btn-green" onclick="addMasterItem('driver', this)">Add / Update</button>
                     </div>
                     <div class="table-responsive" style="max-height:250px;">
-                        <table id="mDriverTable" style="width:100%;"><thead><tr><th>Name</th><th>Phone</th><th>Action</th></tr></thead><tbody></tbody></table>
+                        <table id="mDriverTable" style="width:100%;"><thead><tr><th data-tr="th_num">#</th><th data-tr="driver">Name</th><th>Phone</th><th>Action</th></tr></thead><tbody></tbody></table>
                     </div>
                 </div>
 
-                <!-- Trip Pricing -->
+                <!-- Pricing -->
                 <div class="master-card" style="grid-column: 1 / -1;">
                     <h3 style="color:#27ae60;">🗺️ Add / Edit Trip Pricing</h3>
                     <div class="grid-form" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
-                        <div class="form-group" style="grid-column: 1/-1;"><label>Trip Name:</label><input type="text" id="mTripName"></div>
-                        <div class="form-group"><label>Limo Price (Client):</label><input type="number" id="mLimoP"></div>
-                        <div class="form-group"><label>Limo Rate (Driver):</label><input type="number" id="mLimoR"></div>
-                        <div class="form-group"><label>Microbus Price:</label><input type="number" id="mMicroP"></div>
-                        <div class="form-group"><label>Microbus Rate:</label><input type="number" id="mMicroR"></div>
-                        <div class="form-group"><label>Coaster Price:</label><input type="number" id="mCoasterP"></div>
-                        <div class="form-group"><label>Coaster Rate:</label><input type="number" id="mCoasterR"></div>
-                        <div class="form-group"><label>Bus Price:</label><input type="number" id="mBusP"></div>
-                        <div class="form-group"><label>Bus Rate:</label><input type="number" id="mBusR"></div>
+                        <div class="form-group" style="grid-column: 1/-1;"><label data-tr="trip">Trip Name:</label><input type="text" id="mTripName"></div>
+                        <div class="form-group"><label>Limo (Client):</label><input type="number" id="mLimoP"></div>
+                        <div class="form-group"><label>Limo (Driver):</label><input type="number" id="mLimoR"></div>
+                        <div class="form-group"><label>Microbus (Client):</label><input type="number" id="mMicroP"></div>
+                        <div class="form-group"><label>Microbus (Driver):</label><input type="number" id="mMicroR"></div>
+                        <div class="form-group"><label>Coaster (Client):</label><input type="number" id="mCoasterP"></div>
+                        <div class="form-group"><label>Coaster (Driver):</label><input type="number" id="mCoasterR"></div>
+                        <div class="form-group"><label>Bus (Client):</label><input type="number" id="mBusP"></div>
+                        <div class="form-group"><label>Bus (Driver):</label><input type="number" id="mBusR"></div>
                     </div>
                     <button class="btn btn-green" style="width:100%; margin-top:15px;" onclick="addMasterItem('trip', this)">Save Trip Type</button>
                     <div class="table-responsive" style="max-height:300px; margin-top:15px;">
-                        <table id="mTripTable"><thead><tr><th>Trip</th><th>Limo</th><th>Micro</th><th>Coaster</th><th>Bus</th><th>Action</th></tr></thead><tbody></tbody></table>
+                        <table id="mTripTable"><thead><tr><th data-tr="th_num">#</th><th data-tr="trip">Trip</th><th>Limo</th><th>Micro</th><th>Coaster</th><th>Bus</th><th>Action</th></tr></thead><tbody></tbody></table>
                     </div>
                 </div>
             </div>
@@ -269,13 +284,13 @@
     <!-- Tab 2: Finance -->
     <div id="financeTab" class="tab-content admin-only">
         <div class="card">
-            <h2 class="section-title">💵 General Finance</h2>
+            <h2 class="section-title" data-tr="tab_fin">💵 General Finance</h2>
             <div class="grid-form">
-                <div class="form-group"><label>Type:</label><select id="finType"><option value="Expense" style="color:red;">Expense</option><option value="Revenue" style="color:green;">Revenue</option></select></div>
-                <div class="form-group"><label>Category:</label><input type="text" id="finCategory"></div>
-                <div class="form-group"><label>Amount (EGP):</label><input type="number" id="finAmount"></div>
-                <div class="form-group"><label>Date & Time:</label><input type="datetime-local" id="finDate"></div>
-                <div class="form-group" style="grid-column: span 2;"><label>Notes:</label><input type="text" id="finNotes"></div>
+                <div class="form-group"><label data-tr="rep_type">Type:</label><select id="finType"><option value="Expense" style="color:red;">Expense</option><option value="Revenue" style="color:green;">Revenue</option></select></div>
+                <div class="form-group"><label data-tr="rep_cat">Category:</label><input type="text" id="finCategory"></div>
+                <div class="form-group"><label data-tr="rep_amt">Amount (EGP):</label><input type="number" id="finAmount"></div>
+                <div class="form-group"><label data-tr="date">Date & Time:</label><input type="datetime-local" id="finDate"></div>
+                <div class="form-group" style="grid-column: span 2;"><label data-tr="notes">Notes:</label><input type="text" id="finNotes"></div>
             </div>
             <div style="display:flex; gap:10px; margin-top:20px;">
                 <button class="btn btn-gray" style="flex:1;" onclick="clearFinanceForm()">Clear 🧹</button>
@@ -286,7 +301,7 @@
         <div class="card" style="margin-top: 20px;">
             <div class="table-responsive">
                 <table id="financeTable" style="width:100%;">
-                    <thead><tr><th>#</th><th>Date</th><th>Type</th><th>Category</th><th>Amount</th><th>Notes</th><th>Action</th></tr></thead>
+                    <thead><tr><th data-tr="th_num">#</th><th data-tr="date">Date</th><th data-tr="rep_type">Type</th><th data-tr="rep_cat">Category</th><th data-tr="rep_amt">Amount</th><th data-tr="notes">Notes</th><th>Action</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
@@ -296,14 +311,14 @@
     <!-- Tab: Maintenance -->
     <div id="maintenanceTab" class="tab-content admin-only">
         <div class="card">
-            <h2 class="section-title">🔧 Car Maintenance</h2>
+            <h2 class="section-title" data-tr="tab_mnt">🔧 Car Maintenance</h2>
             <div class="grid-form">
-                <div class="form-group"><label>Date & Time:</label><input type="datetime-local" id="mntDate"></div>
-                <div class="form-group"><label>Type / Category:</label><input type="text" id="mntType"></div>
-                <div class="form-group"><label>Amount (EGP):</label><input type="number" id="mntAmount"></div>
-                <div class="form-group"><label>Location:</label><input type="text" id="mntLocation"></div>
-                <div class="form-group"><label>Odometer:</label><input type="number" id="mntOdometer"></div>
-                <div class="form-group"><label>Notes:</label><input type="text" id="mntNotes"></div>
+                <div class="form-group"><label data-tr="date">Date & Time:</label><input type="datetime-local" id="mntDate"></div>
+                <div class="form-group"><label data-tr="rep_type">Type / Category:</label><input type="text" id="mntType"></div>
+                <div class="form-group"><label data-tr="rep_amt">Amount (EGP):</label><input type="number" id="mntAmount"></div>
+                <div class="form-group"><label data-tr="rep_loc">Location:</label><input type="text" id="mntLocation"></div>
+                <div class="form-group"><label data-tr="rep_odo">Odometer:</label><input type="number" id="mntOdometer"></div>
+                <div class="form-group"><label data-tr="notes">Notes:</label><input type="text" id="mntNotes"></div>
             </div>
             <div style="display:flex; gap:10px; margin-top:20px;">
                 <button class="btn btn-gray" style="flex:1;" onclick="clearMaintenanceForm()">Clear</button>
@@ -314,40 +329,40 @@
         <div class="card" style="margin-top: 20px;">
             <div class="table-responsive">
                 <table id="maintenanceTable" style="width:100%;">
-                    <thead><tr><th>#</th><th>Date</th><th>Type</th><th>Amount</th><th>Location</th><th>Odometer</th><th>Notes</th><th>Action</th></tr></thead>
+                    <thead><tr><th data-tr="th_num">#</th><th data-tr="date">Date</th><th data-tr="rep_type">Type</th><th data-tr="rep_amt">Amount</th><th data-tr="rep_loc">Location</th><th data-tr="rep_odo">Odometer</th><th data-tr="notes">Notes</th><th>Action</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Tab 3: Reports -->
+    <!-- Tab: Reports -->
     <div id="reportsTab" class="tab-content admin-only">
         <div class="card">
             <h2 class="section-title" data-tr="tab_rep">📊 Reports Dashboard</h2>
             <div class="grid-form">
                 <div class="form-group">
-                    <label>Report Type:</label>
+                    <label data-tr="rep_type_select">Report Type:</label>
                     <select id="reportType" onchange="toggleReportTarget()">
-                        <option value="client">Client Report</option>
-                        <option value="driver">Partner Report</option>
-                        <option value="trip_detailed">Trip Report</option>
-                        <option value="trips">Trips Analysis Chart</option>
-                        <option value="clients_agg">Clients Aggregated</option>
-                        <option value="partners_agg">Partners Aggregated</option>
-                        <option value="finance">Finance Report</option>
-                        <option value="maintenance">Maintenance Report</option>
+                        <option value="client" data-tr="opt_client">Client Report</option>
+                        <option value="driver" data-tr="opt_driver">Partner Report</option>
+                        <option value="trip_detailed" data-tr="opt_trip">Trip Report</option>
+                        <option value="trips" data-tr="opt_analysis">Trips Analysis Chart</option>
+                        <option value="clients_agg" data-tr="opt_c_agg">Clients Aggregated</option>
+                        <option value="partners_agg" data-tr="opt_p_agg">Partners Aggregated</option>
+                        <option value="finance" data-tr="opt_fin">Finance Report</option>
+                        <option value="maintenance" data-tr="opt_mnt">Maintenance Report</option>
                     </select>
                 </div>
-                <div class="form-group" id="targetContainer"><label id="targetLabel">Target:</label><select id="reportTarget"></select></div>
-                <div class="form-group"><label>From Date:</label><input type="date" id="repFrom"></div>
-                <div class="form-group"><label>To Date:</label><input type="date" id="repTo"></div>
+                <div class="form-group" id="targetContainer"><label id="targetLabel" data-tr="target">Target:</label><select id="reportTarget"></select></div>
+                <div class="form-group"><label data-tr="rep_from">From Date:</label><input type="date" id="repFrom"></div>
+                <div class="form-group"><label data-tr="rep_to">To Date:</label><input type="date" id="repTo"></div>
             </div>
             
             <div style="display:flex; gap:10px; margin-top:20px;">
-                <button id="searchBtn" class="btn btn-blue" style="flex:2;" onclick="fetchReports()">Search 🔍</button>
+                <button id="searchBtn" class="btn btn-blue" style="flex:2;" onclick="fetchReports()" data-tr="btn_search">Search 🔍</button>
                 <button class="btn btn-green" style="flex:1;" onclick="exportToExcel()">Excel 📊</button>
-                <button class="btn btn-red" style="flex:1;" onclick="exportToPDF()">Print/PDF 📄</button>
+                <button class="btn btn-red" style="flex:1;" onclick="exportToPDF()" data-tr="btn_print">Print/PDF 📄</button>
             </div>
             
             <div id="reportPrintArea" class="report-print-container" style="margin-top:20px;">
@@ -372,13 +387,15 @@
     let editingTripId = null, editingFinanceId = null, editingMaintenanceId = null;
     let syncQueue = JSON.parse(localStorage.getItem('fleet_sync_queue') || '[]');
     let isSyncing = false; let reportChartInstance = null;
+    let editingMasterIndex = { client: -1, driver: -1, trip: -1 };
 
-    // --- Translation System ---
+    // Translation System
     let currentLang = 'ar';
     const dict = {
-        'en': { username:"Username:", password:"Password:", logout:"Logout", dash_rev:"Monthly Profit (EGP)", dash_trips:"Monthly Trips", dash_top:"Top Partner", tab_add:"📝 Add Trip", tab_masters:"⚙️ Masters", tab_fin:"💵 Finance", tab_mnt:"🔧 Maintenance", tab_rep:"📊 Reports", add_title:"📝 Add New Trip", client:"Client:", driver:"Partner:", vehicle:"Vehicle Type:", v_limo:"Limousine", v_micro:"Microbus", v_coaster:"Coaster", v_bus:"Bus", trip:"Trip Name:", date:"Date & Time:", notes:"Notes:", rev_client:"💰 Revenue (Client):", fee_driver:"💵 Partner Fee:", net:"Net Commission:", save_trip:"Save Trip 💾", recent_trips:"🕒 Recent Trips", rev:"Rev", fee:"Fee" },
-        'ar': { username:"اسم المستخدم:", password:"كلمة المرور:", logout:"خروج", dash_rev:"أرباح الشهر (EGP)", dash_trips:"عدد مشاوير الشهر", dash_top:"نجم الشهر (شريك)", tab_add:"📝 إضافة مشوار", tab_masters:"⚙️ الإعدادات", tab_fin:"💵 المالية", tab_mnt:"🔧 الصيانة", tab_rep:"📊 التقارير", add_title:"📝 إضافة مشوار جديد", client:"العميل:", driver:"الشريك (السائق):", vehicle:"نوع السيارة:", v_limo:"ليموزين / ملاكي", v_micro:"ميكروباص", v_coaster:"كوستر / ميني باص", v_bus:"أتوبيس", trip:"اسم المشوار:", date:"التاريخ والوقت:", notes:"ملاحظات:", rev_client:"💰 حساب العميل (EGP):", fee_driver:"💵 حساب الشريك (EGP):", net:"صافي العمولة:", save_trip:"حفظ المشوار 💾", recent_trips:"🕒 أحدث المشاوير", rev:"حساب", fee:"شريك" }
+        'en': { username:"Username:", password:"Password:", logout:"Logout", dash_rev:"Monthly Profit (EGP)", dash_trips:"Monthly Trips", dash_top:"Top Partner", tab_add:"📝 Add Trip", tab_masters:"⚙️ Masters", tab_fin:"💵 Finance", tab_mnt:"🔧 Maintenance", tab_rep:"📊 Reports", add_title:"📝 Add New Trip", client:"Client:", driver:"Partner:", vehicle:"Vehicle Type:", v_limo:"Limousine", v_micro:"Microbus", v_coaster:"Coaster", v_bus:"Bus", trip:"Trip Name:", date:"Date & Time:", notes:"Notes:", rev_client:"💰 Revenue (Client):", fee_driver:"💵 Partner Fee:", net:"Net Commission:", save_trip:"Save Trip 💾", recent_trips:"🕒 Recent Trips", rev:"Rev", fee:"Fee", lbl_clients:"👥 Clients List", lbl_partners:"🤝 Partners & Phones", rep_type:"Type", rep_cat:"Category", rep_amt:"Amount", rep_loc:"Location", rep_odo:"Odometer", rep_type_select:"Report Type:", target:"Target:", rep_from:"From Date:", rep_to:"To Date:", btn_search:"Search 🔍", btn_print:"Print/PDF 📄", opt_client:"Client Report", opt_driver:"Partner Report", opt_trip:"Trip Report", opt_analysis:"Trips Analysis Chart", opt_c_agg:"Clients Aggregated", opt_p_agg:"Partners Aggregated", opt_fin:"Finance Report", opt_mnt:"Maintenance Report", th_num:"#", th_desc:"Description", th_tot:"Total Balance" },
+        'ar': { username:"اسم المستخدم:", password:"كلمة المرور:", logout:"خروج", dash_rev:"أرباح الشهر (EGP)", dash_trips:"عدد مشاوير الشهر", dash_top:"نجم الشهر (شريك)", tab_add:"📝 إضافة مشوار", tab_masters:"⚙️ الإعدادات", tab_fin:"💵 المالية", tab_mnt:"🔧 الصيانة", tab_rep:"📊 التقارير", add_title:"📝 إضافة مشوار جديد", client:"العميل:", driver:"الشريك (السائق):", vehicle:"نوع السيارة:", v_limo:"ليموزين / ملاكي", v_micro:"ميكروباص", v_coaster:"كوستر / ميني باص", v_bus:"أتوبيس", trip:"اسم المشوار:", date:"التاريخ والوقت:", notes:"ملاحظات:", rev_client:"💰 حساب العميل (EGP):", fee_driver:"💵 حساب الشريك (EGP):", net:"صافي العمولة:", save_trip:"حفظ المشوار 💾", recent_trips:"🕒 أحدث المشاوير", rev:"حساب", fee:"شريك", lbl_clients:"👥 قائمة العملاء", lbl_partners:"🤝 الشركاء والهواتف", rep_type:"النوع", rep_cat:"التصنيف", rep_amt:"المبلغ", rep_loc:"المكان", rep_odo:"العداد", rep_type_select:"نوع التقرير:", target:"الهدف:", rep_from:"من تاريخ:", rep_to:"إلى تاريخ:", btn_search:"بحث 🔍", btn_print:"طباعة/PDF 📄", opt_client:"تقرير عميل", opt_driver:"تقرير شريك", opt_trip:"تقرير مشوار", opt_analysis:"تحليل المشاوير", opt_c_agg:"إجمالي العملاء", opt_p_agg:"إجمالي الشركاء", opt_fin:"التقرير المالي", opt_mnt:"تقرير الصيانة", th_num:"#", th_desc:"البيان / الوصف", th_tot:"الإجمالي" }
     };
+
     function toggleLang() {
         currentLang = currentLang === 'ar' ? 'en' : 'ar';
         document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
@@ -390,15 +407,16 @@
                 else el.innerText = dict[currentLang][key];
             }
         });
+        toggleReportTarget();
+        if(recentTripsDB.length > 0) renderRecentTrips();
     }
 
-    // --- Helpers ---
     function getCurrentLocalDateTime() { const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); return now.toISOString().slice(0, 16); }
     function generateID(prefix) { return prefix + "-" + Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000); }
     function forceAppSync() { localStorage.removeItem('fleet_data_cache'); location.reload(); }
 
     window.addEventListener('load', () => {
-        toggleLang(); // Init AR
+        toggleLang(); toggleLang(); 
         const session = localStorage.getItem('samy_logged_in_user');
         setTimeout(() => {
             document.getElementById('splashScreen').style.opacity = '0'; 
@@ -433,7 +451,7 @@
                 localStorage.setItem('fleet_data_cache', JSON.stringify(data));
                 loadDataToUI(data); processSyncQueue();
             }
-        }).catch(err => console.log("Offline"));
+        }).catch(err => console.log("Offline Mode"));
     });
 
     window.addEventListener('online', processSyncQueue);
@@ -466,17 +484,16 @@
         document.getElementById('tripList').innerHTML = tripsDB.map(i => `<option value="${i.name}">`).join('');
 
         const cBody = document.querySelector('#mClientTable tbody');
-        if(cBody) cBody.innerHTML = clientsDB.map((c, i) => `<tr><td style="text-align:left;">${c}</td><td style="white-space:nowrap;"><button class="btn btn-blue" onclick="loadMasterEdit('client', ${i})" style="padding:4px">✏️</button><button class="btn btn-red" onclick="removeMasterItem('Clients', '${c}', ${i})" style="padding:4px">🗑️</button></td></tr>`).join('');
+        if(cBody) cBody.innerHTML = clientsDB.map((c, i) => `<tr><td>${i+1}</td><td style="text-align:left;">${c}</td><td style="white-space:nowrap;"><button class="btn btn-blue" onclick="loadMasterEdit('client', ${i})" style="padding:4px">✏️</button><button class="btn btn-red" onclick="removeMasterItem('Clients', '${c}', ${i})" style="padding:4px">🗑️</button></td></tr>`).join('');
         
         const dBody = document.querySelector('#mDriverTable tbody');
-        if(dBody) dBody.innerHTML = driversDB.map((d, i) => `<tr><td style="text-align:left;">${d.name}</td><td style="direction:ltr;">${d.phone||''}</td><td style="white-space:nowrap;"><button class="btn btn-blue" onclick="loadMasterEdit('driver', ${i})" style="padding:4px">✏️</button><button class="btn btn-red" onclick="removeMasterItem('Drivers', '${d.name}', ${i})" style="padding:4px">🗑️</button></td></tr>`).join('');
+        if(dBody) dBody.innerHTML = driversDB.map((d, i) => `<tr><td>${i+1}</td><td style="text-align:left;">${d.name}</td><td style="direction:ltr;">${d.phone||''}</td><td style="white-space:nowrap;"><button class="btn btn-blue" onclick="loadMasterEdit('driver', ${i})" style="padding:4px">✏️</button><button class="btn btn-red" onclick="removeMasterItem('Drivers', '${d.name}', ${i})" style="padding:4px">🗑️</button></td></tr>`).join('');
 
         const mBody = document.querySelector('#mTripTable tbody');
         if(mBody) {
-            mBody.innerHTML = tripsDB.map((t, i) => `<tr><td style="text-align:left;">${t.name}</td><td>${t.lp||0}/${t.lr||0}</td><td>${t.mp||0}/${t.mr||0}</td><td>${t.cp||0}/${t.cr||0}</td><td>${t.bp||0}/${t.br||0}</td><td><button class="btn btn-blue" onclick="loadMasterEdit('trip', ${i})" style="padding:4px">✏️</button><button class="btn btn-red" onclick="removeMasterItem('Trip_Types', '${t.name}', ${i})" style="padding:4px">🗑️</button></td></tr>`).join('');
+            mBody.innerHTML = tripsDB.map((t, i) => `<tr><td>${i+1}</td><td style="text-align:left;">${t.name}</td><td>${t.lp||0}/${t.lr||0}</td><td>${t.mp||0}/${t.mr||0}</td><td>${t.cp||0}/${t.cr||0}</td><td>${t.bp||0}/${t.br||0}</td><td><button class="btn btn-blue" onclick="loadMasterEdit('trip', ${i})" style="padding:4px">✏️</button><button class="btn btn-red" onclick="removeMasterItem('Trip_Types', '${t.name}', ${i})" style="padding:4px">🗑️</button></td></tr>`).join('');
         }
-        
-        renderRecentTrips(); updateDashboard();
+        renderRecentTrips(); renderFinances(); renderMaintenance(); updateDashboard();
     }
 
     function processSyncQueue() {
@@ -490,14 +507,13 @@
 
     function updateDashboard() {
         if(userRole !== 'Admin') return;
-        const currentMonth = new Date().toISOString().slice(0, 7); 
         let mRev = 0; let mCount = 0; let driverCounts = {};
         
+        // Smart calculations: sum all recent trips in the system
         recentTripsDB.forEach(t => {
-            if(String(t.date).startsWith(currentMonth)) {
-                mRev += parseFloat(t.revenue) || 0; mCount++;
-                if(t.driver) { driverCounts[t.driver] = (driverCounts[t.driver] || 0) + 1; }
-            }
+            mRev += parseFloat(t.revenue) || 0; 
+            mCount++;
+            if(t.driver) { driverCounts[t.driver] = (driverCounts[t.driver] || 0) + 1; }
         });
         
         let topDriver = "-"; let maxTrips = 0;
@@ -548,7 +564,7 @@
         if (!driversDB.find(d => d.name === driverName)) { driversDB.push({name: driverName, phone: ""}); isMasterUpdated = true; }
 
         if (isMasterUpdated) {
-            updateDropdownsAndTables();
+            loadDataToUI({users:usersDB, clients:clientsDB, drivers:driversDB, trips:tripsDB, recent:recentTripsDB, finances:financesDB, maintenance:maintenanceDB});
             addToSyncQueue({ record_type: "update_masters", clients: clientsDB, drivers: driversDB, trips: tripsDB });
         }
 
@@ -570,7 +586,7 @@
         const tbody = document.querySelector('#recentTripsTable tbody');
         if(!tbody) return;
         if(recentTripsDB.length === 0) { tbody.innerHTML = '<tr><td colspan="9">No trips</td></tr>'; return; }
-        tbody.innerHTML = recentTripsDB.map((t, i) => `<tr><td>${i + 1}</td><td style="direction:ltr;">${(t.date||"").slice(0, 16)}</td><td>${t.client}</td><td>${t.driver}</td><td>${t.vehicle||'-'}</td><td>${t.trip}</td><td style="color:#27ae60;font-weight:bold;">${t.revenue}</td><td style="color:#e74c3c;">${t.fee}</td><td style="white-space:nowrap;"><button class="btn btn-blue" style="padding:4px 8px;" onclick="loadTrip(${i})">✏️</button><button class="btn btn-red" style="padding:4px 8px;" onclick="delTrip(${i})">🗑️</button><button class="btn btn-whatsapp" style="padding:4px 8px;" onclick="sendWA(${i})" title="Send WhatsApp">💬</button></td></tr>`).join('');
+        tbody.innerHTML = recentTripsDB.map((t, i) => `<tr><td>${i + 1}</td><td style="direction:ltr;">${(t.date||"").slice(0, 16)}</td><td>${t.client}</td><td>${t.driver}</td><td>${t.vehicle||'-'}</td><td>${t.trip}</td><td style="color:#27ae60;font-weight:bold;">${t.revenue}</td><td style="color:#e74c3c;">${t.fee}</td><td style="white-space:nowrap;"><button class="btn btn-blue" style="padding:4px 8px;" onclick="loadTrip(${i})">✏️</button><button class="btn btn-red" style="padding:4px 8px;" onclick="delTrip(${i})">🗑️</button><button class="btn btn-whatsapp" style="padding:4px 8px;" onclick="sendWA(${i})" title="WhatsApp">💬</button></td></tr>`).join('');
     }
 
     function sendWA(idx) {
@@ -592,12 +608,7 @@
         calcTotals(); window.scrollTo({top: 0});
     }
     function delTrip(idx) { 
-        if(confirm('Delete?')) { 
-            addToSyncQueue({record_type:"delete_trip", trip_id: recentTripsDB[idx].id}); 
-            recentTripsDB.splice(idx,1); 
-            localStorage.setItem('fleet_data_cache', JSON.stringify({status: 'success', users: usersDB, clients: clientsDB, drivers: driversDB, trips: tripsDB, recent: recentTripsDB, finances: financesDB, maintenance: maintenanceDB}));
-            renderRecentTrips(); updateDashboard(); 
-        } 
+        if(confirm('Delete?')) { addToSyncQueue({record_type:"delete_trip", trip_id: recentTripsDB[idx].id}); recentTripsDB.splice(idx,1); localStorage.setItem('fleet_data_cache', JSON.stringify({status: 'success', users: usersDB, clients: clientsDB, drivers: driversDB, trips: tripsDB, recent: recentTripsDB, finances: financesDB, maintenance: maintenanceDB})); renderRecentTrips(); updateDashboard(); } 
     }
     function clearForm() { editingTripId = null; document.getElementById('tripClientSelect').value=''; document.getElementById('tripDriverSelect').value=''; document.getElementById('tripNameSelect').value=''; document.getElementById('revEGP').value='0'; document.getElementById('tripDriverFee').value='0'; document.getElementById('tripNotes').value=''; document.getElementById('tripDate').value = getCurrentLocalDateTime(); calcTotals(); }
 
@@ -626,16 +637,13 @@
             document.getElementById('mDriverName').value = ''; document.getElementById('mDriverPhone').value = ''; editingMasterIndex.driver = -1; btn.innerText = "Add";
         } else if(type === 'trip') { 
             let n = document.getElementById('mTripName').value.trim(); if(!n) return;
-            let lp = parseFloat(document.getElementById('mLimoP').value)||0, lr = parseFloat(document.getElementById('mLimoR').value)||0;
-            let mp = parseFloat(document.getElementById('mMicroP').value)||0, mr = parseFloat(document.getElementById('mMicroR').value)||0;
-            let cp = parseFloat(document.getElementById('mCoasterP').value)||0, cr = parseFloat(document.getElementById('mCoasterR').value)||0;
-            let bp = parseFloat(document.getElementById('mBusP').value)||0, br = parseFloat(document.getElementById('mBusR').value)||0;
-            
+            let lp = parseFloat(document.getElementById('mLimoP').value)||0, lr = parseFloat(document.getElementById('mLimoR').value)||0, mp = parseFloat(document.getElementById('mMicroP').value)||0, mr = parseFloat(document.getElementById('mMicroR').value)||0, cp = parseFloat(document.getElementById('mCoasterP').value)||0, cr = parseFloat(document.getElementById('mCoasterR').value)||0, bp = parseFloat(document.getElementById('mBusP').value)||0, br = parseFloat(document.getElementById('mBusR').value)||0;
             if(editingMasterIndex.trip > -1) { let ex = tripsDB[editingMasterIndex.trip]; ex.name=n; ex.lp=lp; ex.lr=lr; ex.mp=mp; ex.mr=mr; ex.cp=cp; ex.cr=cr; ex.bp=bp; ex.br=br; } 
             else { let ex = tripsDB.find(t => t.name === n); if(ex) { ex.lp=lp; ex.lr=lr; ex.mp=mp; ex.mr=mr; ex.cp=cp; ex.cr=cr; ex.bp=bp; ex.br=br; } else { tripsDB.push({name:n, lp:lp, lr:lr, mp:mp, mr:mr, cp:cp, cr:cr, bp:bp, br:br}); } }
             document.querySelectorAll('#mastersTab input[type="number"]').forEach(i => i.value=''); document.getElementById('mTripName').value=''; editingMasterIndex.trip = -1;
         }
-        updateDropdownsAndTables(); localStorage.setItem('fleet_data_cache', JSON.stringify({status: 'success', users: usersDB, clients: clientsDB, drivers: driversDB, trips: tripsDB, recent: recentTripsDB, finances: financesDB, maintenance: maintenanceDB}));
+        loadDataToUI({users:usersDB, clients:clientsDB, drivers:driversDB, trips:tripsDB, recent:recentTripsDB, finances:financesDB, maintenance:maintenanceDB});
+        localStorage.setItem('fleet_data_cache', JSON.stringify({status: 'success', users: usersDB, clients: clientsDB, drivers: driversDB, trips: tripsDB, recent: recentTripsDB, finances: financesDB, maintenance: maintenanceDB})); 
         addToSyncQueue({ record_type: "update_masters", clients: clientsDB, drivers: driversDB, trips: tripsDB }); toast('Saved!');
     }
     function removeMasterItem(sheetName, name, idx) {
@@ -643,39 +651,33 @@
         if(sheetName === 'Clients') clientsDB.splice(idx, 1);
         if(sheetName === 'Drivers') driversDB.splice(idx, 1);
         if(sheetName === 'Trip_Types') tripsDB.splice(idx, 1);
-        updateDropdownsAndTables(); localStorage.setItem('fleet_data_cache', JSON.stringify({status: 'success', users: usersDB, clients: clientsDB, drivers: driversDB, trips: tripsDB, recent: recentTripsDB, finances: financesDB, maintenance: maintenanceDB}));
+        loadDataToUI({users:usersDB, clients:clientsDB, drivers:driversDB, trips:tripsDB, recent:recentTripsDB, finances:financesDB, maintenance:maintenanceDB});
+        localStorage.setItem('fleet_data_cache', JSON.stringify({status: 'success', users: usersDB, clients: clientsDB, drivers: driversDB, trips: tripsDB, recent: recentTripsDB, finances: financesDB, maintenance: maintenanceDB})); 
         addToSyncQueue({ record_type: "update_masters", clients: clientsDB, drivers: driversDB, trips: tripsDB }); toast('Deleted');
     }
 
-    // ================== Finance & Mnt (Skipping full redraw for brevity, standard saving) ==================
-    // ... (Finance/Mnt functions identical to previous, they just push to local DB and syncQueue) ...
     function renderFinances() {
-        const tbody = document.querySelector('#financeTable tbody');
-        if(!tbody) return; if(financesDB.length === 0) { tbody.innerHTML = '<tr><td colspan="7">No records</td></tr>'; return; }
+        const tbody = document.querySelector('#financeTable tbody'); if(!tbody) return; if(financesDB.length === 0) { tbody.innerHTML = '<tr><td colspan="7">No records</td></tr>'; return; }
         tbody.innerHTML = financesDB.map((f, i) => `<tr><td>${i + 1}</td><td style="direction:ltr;">${(f.date||"").slice(0, 16)}</td><td style="color:${f.type==='Revenue'?'#27ae60':'#e74c3c'};">${f.type}</td><td>${f.category}</td><td style="font-weight:bold;">${f.amount}</td><td>${f.notes}</td><td style="white-space:nowrap;"><button class="btn btn-red" onclick="deleteFinance(${i})" style="padding:4px">🗑️</button></td></tr>`).join('');
     }
     function saveFinance() {
         const tDate = document.getElementById('finDate').value.replace('T', ' '); const tType = document.getElementById('finType').value; const cat = document.getElementById('finCategory').value; const amt = parseFloat(document.getElementById('finAmount').value); const notes = document.getElementById('finNotes').value;
-        if(!amt || !cat) return;
-        let targetId = generateID("FIN"); financesDB.push({ id: targetId, date: tDate, type: tType, category: cat, amount: amt, notes: notes });
+        if(!amt || !cat) return; let targetId = generateID("FIN"); financesDB.push({ id: targetId, date: tDate, type: tType, category: cat, amount: amt, notes: notes });
         financesDB.sort((a,b) => String(a.date).localeCompare(String(b.date))); renderFinances(); addToSyncQueue({ record_type: "finance", fin_id: targetId, fin_type: tType, category: cat, amount: amt, date: tDate, notes: notes, added_by: loggedInUser }); toast('Saved');
     }
     function deleteFinance(i) { if(confirm('Del?')) { addToSyncQueue({record_type:"delete_finance", fin_id: financesDB[i].id}); financesDB.splice(i,1); renderFinances(); } }
 
     function renderMaintenance() {
-        const tbody = document.querySelector('#maintenanceTable tbody');
-        if(!tbody) return; if(maintenanceDB.length === 0) { tbody.innerHTML = '<tr><td colspan="8">No records</td></tr>'; return; }
+        const tbody = document.querySelector('#maintenanceTable tbody'); if(!tbody) return; if(maintenanceDB.length === 0) { tbody.innerHTML = '<tr><td colspan="8">No records</td></tr>'; return; }
         tbody.innerHTML = maintenanceDB.map((m, i) => `<tr><td>${i + 1}</td><td style="direction:ltr;">${(m.date||"").slice(0, 16)}</td><td>${m.type}</td><td style="color:#e74c3c;">${m.amount}</td><td>${m.location}</td><td>${m.odometer}</td><td>${m.notes}</td><td style="white-space:nowrap;"><button class="btn btn-red" onclick="deleteMaintenance(${i})" style="padding:4px">🗑️</button></td></tr>`).join('');
     }
     function saveMaintenance() {
         const mDate = document.getElementById('mntDate').value.replace('T', ' '); const type = document.getElementById('mntType').value; const amt = parseFloat(document.getElementById('mntAmount').value); const loc = document.getElementById('mntLocation').value; const odo = document.getElementById('mntOdometer').value; const notes = document.getElementById('mntNotes').value;
-        if(!amt || !type) return;
-        let targetId = generateID("MNT"); maintenanceDB.push({ id: targetId, date: mDate, type: type, amount: amt, location: loc, odometer: odo, notes: notes });
+        if(!amt || !type) return; let targetId = generateID("MNT"); maintenanceDB.push({ id: targetId, date: mDate, type: type, amount: amt, location: loc, odometer: odo, notes: notes });
         maintenanceDB.sort((a,b) => String(a.date).localeCompare(String(b.date))); renderMaintenance(); addToSyncQueue({ record_type: "maintenance", mnt_id: targetId, type: type, amount: amt, location: loc, odometer: odo, date: mDate, notes: notes, added_by: loggedInUser }); toast('Saved');
     }
     function deleteMaintenance(i) { if(confirm('Del?')) { addToSyncQueue({record_type:"delete_maintenance", mnt_id: maintenanceDB[i].id}); maintenanceDB.splice(i,1); renderMaintenance(); } }
 
-    // ================= Native Print PDF Fix =================
     function exportToPDF() { window.print(); }
 
     function toast(msg, type='info') {
@@ -687,8 +689,21 @@
     function toggleReportTarget() {
         const type = document.getElementById('reportType').value;
         const sel = document.getElementById('reportTarget'); sel.innerHTML = '';
-        if(type === 'client') clientsDB.forEach(i => sel.innerHTML += `<option>${i}</option>`);
-        else if(type === 'driver') driversDB.forEach(i => sel.innerHTML += `<option>${i.name}</option>`);
+        const lbl = document.getElementById('targetLabel');
+        let dL = dict[currentLang];
+        
+        if(type === 'client') {
+            lbl.innerText = dL.client;
+            clientsDB.forEach(i => sel.innerHTML += `<option>${i}</option>`);
+        } else if(type === 'driver') {
+            lbl.innerText = dL.driver;
+            driversDB.forEach(i => sel.innerHTML += `<option>${i.name}</option>`);
+        } else if(type === 'trip_detailed') {
+            lbl.innerText = dL.trip;
+            tripsDB.forEach(i => sel.innerHTML += `<option>${i.name}</option>`);
+        } else {
+            lbl.innerText = dL.target;
+        }
     }
 
     function fetchReports() {
@@ -708,27 +723,31 @@
                     if(type==='client' && (t.client||"").toLowerCase()===target) res.push({date:t.date, desc:t.trip, amt:t.revenue});
                     else if(type==='driver' && (t.driver||"").toLowerCase()===target) res.push({date:t.date, desc:t.trip, amt:t.fee});
                     else if(type==='trips') res.push({date:t.date, desc:`${t.client} - ${t.driver}`, amt:t.revenue});
+                    else if(type==='trip_detailed' && (t.trip||"").toLowerCase()===target) res.push({date:t.date, desc:t.client, amt:t.revenue});
                 }
             });
         }
         
         const tbody = document.querySelector('#reportsTable tbody'); tbody.innerHTML = ''; let tot = 0;
+        let dL = dict[currentLang];
         
         if(type === 'finance') {
-            document.querySelector('#reportsTable thead').innerHTML = '<tr><th>Date</th><th>Type</th><th>Category</th><th>Amount</th></tr>';
-            res.forEach((r) => { tot += (r.type==='Revenue'?r.amount:-r.amount); tbody.innerHTML += `<tr><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.type}</td><td>${r.category}</td><td>${r.amount}</td></tr>`; });
+            document.querySelector('#reportsTable thead').innerHTML = `<tr><th>${dL.th_num}</th><th>${dL.date}</th><th>${dL.rep_type}</th><th>${dL.rep_cat}</th><th>${dL.rep_amt}</th></tr>`;
+            res.forEach((r,i) => { tot += (r.type==='Revenue'?parseFloat(r.amount):-parseFloat(r.amount)); tbody.innerHTML += `<tr><td>${i+1}</td><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.type}</td><td>${r.category}</td><td>${r.amount}</td></tr>`; });
+            tbody.innerHTML += `<tr class="total-row"><td colspan="4">${dL.th_tot}</td><td style="direction:ltr;">${tot.toFixed(2)}</td></tr>`;
         } else if (type === 'maintenance') {
-            document.querySelector('#reportsTable thead').innerHTML = '<tr><th>Date</th><th>Type</th><th>Location</th><th>Amount</th></tr>';
-            res.forEach((r) => { tot += parseFloat(r.amount); tbody.innerHTML += `<tr><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.type}</td><td>${r.location}</td><td>${r.amount}</td></tr>`; });
+            document.querySelector('#reportsTable thead').innerHTML = `<tr><th>${dL.th_num}</th><th>${dL.date}</th><th>${dL.rep_type}</th><th>${dL.rep_loc}</th><th>${dL.rep_amt}</th></tr>`;
+            res.forEach((r,i) => { tot += parseFloat(r.amount); tbody.innerHTML += `<tr><td>${i+1}</td><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.type}</td><td>${r.location}</td><td>${r.amount}</td></tr>`; });
+            tbody.innerHTML += `<tr class="total-row"><td colspan="4">${dL.th_tot}</td><td style="direction:ltr;">${tot.toFixed(2)}</td></tr>`;
         } else {
-            document.querySelector('#reportsTable thead').innerHTML = '<tr><th>Date</th><th>Description</th><th>Amount</th></tr>';
-            res.forEach((r) => { tot += parseFloat(r.amt); tbody.innerHTML += `<tr><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.desc}</td><td>${r.amt}</td></tr>`; });
+            document.querySelector('#reportsTable thead').innerHTML = `<tr><th>${dL.th_num}</th><th>${dL.date}</th><th>${dL.th_desc}</th><th>${dL.rep_amt}</th></tr>`;
+            res.forEach((r,i) => { tot += parseFloat(r.amt); tbody.innerHTML += `<tr><td>${i+1}</td><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.desc}</td><td>${r.amt}</td></tr>`; });
+            tbody.innerHTML += `<tr class="total-row"><td colspan="3">${dL.th_tot}</td><td style="direction:ltr;">${tot.toFixed(2)}</td></tr>`;
         }
         
-        tbody.innerHTML += `<tr class="total-row"><td colspan="2">الإجمالي / Total</td><td>${tot}</td></tr>`;
-        document.getElementById('printReportTitle').innerHTML = `Report: ${target} (${fDate} to ${tDate})`; document.getElementById('printReportTitle').style.display = 'block';
+        document.getElementById('printReportTitle').innerHTML = `${dL.tab_rep}: ${target.toUpperCase()} (${fDate} ➡ ${tDate})`; 
+        document.getElementById('printReportTitle').style.display = 'block';
     }
 </script>
 </body>
 </html>
-
