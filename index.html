@@ -94,7 +94,7 @@
         .report-title-header { text-align: center; color: #1e3c72; margin-bottom: 15px; font-size: 1.4rem; display: none; border-bottom: 3px solid #f39c12; padding-bottom: 8px; font-weight: bold; }
         #chartContainer { max-width: 100%; margin: 15px auto; height: 300px; display: none; }
 
-        /* Ultra-Premium Invoice & Report Print Styling */
+        /* Print Styling */
         @media print {
             body { background: #fff !important; }
             body * { visibility: hidden; }
@@ -705,62 +705,71 @@
         }
     }
 
-    // Fixed Correct Mapping for Reports Logic
+    // Fixed Mapping Logic for Reports
     function fetchReports() {
         const type = document.getElementById('reportType').value;
-        const target = (document.getElementById('reportTarget').value||"").toLowerCase();
-        const fDate = document.getElementById('repFrom').value; const tDate = document.getElementById('repTo').value;
+        const target = (document.getElementById('reportTarget').value || "").toLowerCase().trim();
+        const fDate = document.getElementById('repFrom').value;
+        const tDate = document.getElementById('repTo').value;
         
         let res = [];
-        if(type === 'finance') {
-            financesDB.forEach(f => { const d = (f.date||"").split(' ')[0]; if(d >= fDate && d <= tDate) res.push(f); });
+        if (type === 'finance') {
+            financesDB.forEach(f => {
+                const d = (f.date || "").split(' ')[0];
+                if (d >= fDate && d <= tDate) res.push(f);
+            });
         } else if (type === 'maintenance') {
-            maintenanceDB.forEach(m => { const d = (m.date||"").split(' ')[0]; if(d >= fDate && d <= tDate) res.push(m); });
+            maintenanceDB.forEach(m => {
+                const d = (m.date || "").split(' ')[0];
+                if (d >= fDate && d <= tDate) res.push(m);
+            });
         } else {
             recentTripsDB.forEach(t => {
-                const d = (t.date||"").split(' ')[0];
-                if(d >= fDate && d <= tDate) {
-                    const cName = (t.client||"").trim();
-                    const pName = (t.driver||"").trim();
-                    const tName = (t.trip||"").trim();
+                const d = (t.date || "").split(' ')[0];
+                if (d >= fDate && d <= tDate) {
+                    const cName = (t.client || "").trim();
+                    const pName = (t.driver || "").trim();
+                    const tName = (t.trip || "").trim();
                     const rev = parseFloat(t.revenue) || 0;
                     const fee = parseFloat(t.fee) || 0;
 
-                    if(type==='client' && cName.toLowerCase() === target) {
-                        res.push({date: t.date, desc: tName, amt: rev});
-                    } else if(type==='driver' && pName.toLowerCase() === target) {
-                        res.push({date: t.date, desc: tName, amt: fee});
-                    } else if(type==='trips') {
-                        res.push({date: t.date, desc: `${tName} (${cName} - ${pName})`, amt: rev});
-                    } else if(type==='trip_detailed' && tName.toLowerCase() === target) {
-                        res.push({date: t.date, desc: `${cName} / ${pName}`, amt: rev});
+                    if (type === 'client' && cName.toLowerCase() === target) {
+                        res.push({ date: t.date, desc: tName, amt: rev });
+                    } else if (type === 'driver' && pName.toLowerCase() === target) {
+                        res.push({ date: t.date, desc: tName, amt: fee });
+                    } else if (type === 'trips') {
+                        res.push({ date: t.date, desc: `${tName} (${cName} - ${pName})`, amt: rev });
+                    } else if (type === 'trip_detailed' && tName.toLowerCase() === target) {
+                        res.push({ date: t.date, desc: `${cName} / ${pName}`, amt: rev });
                     }
                 }
             });
         }
         
-        const tbody = document.querySelector('#reportsTable tbody'); tbody.innerHTML = ''; let tot = 0;
+        const tbody = document.querySelector('#reportsTable tbody');
+        tbody.innerHTML = '';
+        let tot = 0;
         let dL = dict[currentLang];
         
-        if(type === 'finance') {
+        if (type === 'finance') {
             document.querySelector('#reportsTable thead').innerHTML = `<tr><th>${dL.th_num}</th><th>${dL.date}</th><th>${dL.rep_type}</th><th>${dL.rep_cat}</th><th>${dL.rep_amt}</th></tr>`;
-            res.forEach((r,i) => { 
-                tot += (r.type==='Revenue'?parseFloat(r.amount):-parseFloat(r.amount)); 
-                tbody.innerHTML += `<tr><td>${i+1}</td><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.type}</td><td>${r.category}</td><td style="font-weight:bold;">${parseFloat(r.amount).toFixed(2)}</td></tr>`; 
+            res.forEach((r, i) => { 
+                tot += (r.type === 'Revenue' ? parseFloat(r.amount) : -parseFloat(r.amount)); 
+                tbody.innerHTML += `<tr><td>${i + 1}</td><td style="direction:ltr;">${r.date.slice(0, 16)}</td><td>${r.type}</td><td>${r.category}</td><td style="font-weight:bold;">${parseFloat(r.amount).toFixed(2)}</td></tr>`; 
             });
             tbody.innerHTML += `<tr class="total-row"><td colspan="4">${dL.th_tot}</td><td style="direction:ltr;">${tot.toFixed(2)}</td></tr>`;
         } else if (type === 'maintenance') {
             document.querySelector('#reportsTable thead').innerHTML = `<tr><th>${dL.th_num}</th><th>${dL.date}</th><th>${dL.rep_type}</th><th>${dL.rep_loc}</th><th>${dL.rep_amt}</th></tr>`;
-            res.forEach((r,i) => { 
+            res.forEach((r, i) => { 
                 tot += parseFloat(r.amount); 
-                tbody.innerHTML += `<tr><td>${i+1}</td><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.type}</td><td>${r.location}</td><td style="font-weight:bold;">${parseFloat(r.amount).toFixed(2)}</td></tr>`; 
+                tbody.innerHTML += `<tr><td>${i + 1}</td><td style="direction:ltr;">${r.date.slice(0, 16)}</td><td>${r.type}</td><td>${r.location}</td><td style="font-weight:bold;">${parseFloat(r.amount).toFixed(2)}</td></tr>`; 
             });
             tbody.innerHTML += `<tr class="total-row"><td colspan="4">${dL.th_tot}</td><td style="direction:ltr;">${tot.toFixed(2)}</td></tr>`;
         } else {
             document.querySelector('#reportsTable thead').innerHTML = `<tr><th>${dL.th_num}</th><th>${dL.date}</th><th>${dL.th_desc}</th><th>${dL.rep_amt}</th></tr>`;
-            res.forEach((r,i) => { 
+            res.forEach((r, i) => { 
                 tot += parseFloat(r.amt); 
-                tbody.innerHTML += `<tr><td>${i+1}</td><td style="direction:ltr;">${r.date.slice(0,16)}</td><td>${r.desc}</td><td style="font-weight:bold;">${parseFloat(r.amt).toFixed(2)}</td></tr>`; 
+                tbody.innerHTML += `<tr><td>${i + 1}</td><td style="direction:ltr;">${r.date.slice(0, 16)}</td><td>${r.desc}</td><td style="font-weight:bold;">${parseFloat(r.amt).toFixed(2)}</td></tr>`; 
             });
             tbody.innerHTML += `<tr class="total-row"><td colspan="3">${dL.th_tot}</td><td style="direction:ltr;">${tot.toFixed(2)}</td></tr>`;
         }
@@ -771,4 +780,3 @@
 </script>
 </body>
 </html>
-
