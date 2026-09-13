@@ -705,7 +705,7 @@
         }
     }
 
-    // Fixed Mapping Logic for Reports
+    // Precise Reports Function Matching Google Sheet Columns
     function fetchReports() {
         const type = document.getElementById('reportType').value;
         const target = (document.getElementById('reportTarget').value || "").toLowerCase().trim();
@@ -730,8 +730,8 @@
                     const cName = (t.client || "").trim();
                     const pName = (t.driver || "").trim();
                     const tName = (t.trip || "").trim();
-                    const rev = parseFloat(t.revenue) || 0;
-                    const fee = parseFloat(t.fee) || 0;
+                    const rev = parseFloat(t.revenue || 0);
+                    const fee = parseFloat(t.fee || 0);
 
                     if (type === 'client' && cName.toLowerCase() === target) {
                         res.push({ date: t.date, desc: tName, amt: rev });
