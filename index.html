@@ -2337,5 +2337,128 @@
         if(tabId === 'reportsTab') { populatePartnerDropdown(); generateReport(); }
     }
 </script>
+    // =========================================================================
+    // ===== محرك الطباعة المباشرة عبر البلوتوث (Direct BLE XPrinter Engine) =====
+    // =========================================================================
+    
+    const DirectBLEPrinter = {
+        device: null,
+        characteristic: null,
+        
+        async connect() {
+            try {
+                // فتح نافذة الأندرويد الأصلية للبحث عن الطابعات
+                this.device = await navigator.bluetooth.requestDevice({
+                    acceptAllDevices: true,
+                    optionalServices: [
+                        '000018f0-0000-1000-8000-00805f9b34fb', // خدمات Xprinter
+                        '49535343-fe7d-4ae5-8fa9-9fafd205e455', // خدمات BLE عامة
+                        'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+                        '00001101-0000-1000-8000-00805f9b34fb'  // SPP Classic
+                    ] 
+                });
+                
+                const server = await this.device.gatt.connect();
+                const services = await server.getPrimaryServices();
+                
+                for (const service of services) {
+                    const characteristics = await service.getCharacteristics();
+                    for (const char of characteristics) {
+                        // البحث عن المنفذ القابل للكتابة (إرسال البيانات)
+                        if (char.properties.write || char.properties.writeWithoutResponse) {
+                            this.characteristic = char;
+                            alert('✅ تم الربط بنجاح مع طابعة: ' + this.device.name);
+                            return true;
+                        }
+                    }
+                }
+                alert('❌ تم الاتصال ولكن لم نعثر على منفذ استلام البيانات بالطابعة.');
+                return false;
+            } catch(e) {
+                console.error(e);
+                alert('⚠️ لم يتم الاتصال. تأكد من تشغيل (البلوتوث) و (الموقع/Location) في الموبايل.\n\nتفاصيل: ' + e.message);
+                return false;
+            }
+        },
+
+        async sendDataInChunks(dataString) {
+            if (!this.characteristic) {
+                let connected = await this.connect();
+                if (!connected) return;
+            }
+            try {
+                let encoder = new TextEncoder();
+                // أمر تهيئة الطابعة (ESC/POS Init)
+                let initCmd = new Uint8Array([0x1B, 0x40]);
+                await this.characteristic.writeValue(initCmd);
+
+                let data = encoder.encode(dataString);
+                // إرسال البيانات على دفعات (لأن بلوتوث BLE لا يقبل أكثر من 512 بايت في الدفعة)
+                for (let i = 0; i < data.length; i += 100) {
+                    await this.characteristic.writeValue(data.slice(i, i + 100));
+                }
+            } catch(e) {
+                alert('❌ فشل إرسال البيانات للطابعة: ' + e.message);
+                this.characteristic = null; // إعادة ضبط الاتصال
+            }
+        }
+    };
+
+    // --- 1. تعديل دالة طباعة الباركود (ليبل Xprinter) ---
+    // الطابعة بتستخدم أوامر هاردوير اسمها (TSPL) لطباعة الاستيكر
+    function printBarcodeLabel(prodName) {
+        const prod = products.find(p => p && p.n === prodName); 
+        if (!prod || !prod.barcode) return alert("⚠️ هذا المنتج لا يملك باركود بعد!");
+        
+        // بناء كود الهاردوير (TSPL) لمقاس ليبل 40x20 ملي (يمكنك تعديل المقاس من هنا)
+        let tsplCmd = `SIZE 40 mm, 20 mm\r\n`;
+        tsplCmd += `GAP 2 mm, 0 mm\r\n`;
+        tsplCmd += `CLS\r\n`; // مسح الذاكرة وبدء رسم ليبل جديد
+        
+        // رسم النصوص والباركود (استخدمنا إنجليزي لتفادي تشفير الطابعة للعربي)
+        tsplCmd += `TEXT 10,10,"TSS24.BF2",0,1,1,"El Sayeh Store"\r\n`;
+        tsplCmd += `BARCODE 10,60,"128",50,1,0,2,2,"${prod.barcode}"\r\n`;
+        tsplCmd += `TEXT 10,130,"TSS24.BF2",0,1,1,"Price: ${prod.sp} EGP"\r\n`;
+        
+        tsplCmd += `PRINT 1,1\r\n`; // أمر تنفيذ الطباعة
+        
+        // إرسال الأمر المباشر للبلوتوث
+        DirectBLEPrinter.sendDataInChunks(tsplCmd);
+    }
+
+    // --- 2. تعديل دالة طباعة ريسيت المبيعات ---
+    function printSingleReceipt(invId) {
+        let inv = savedInvoices.find(i => i && i.id === invId);
+        if (!inv && invoiceItems.length > 0) {
+            let totalSellRaw = 0; invoiceItems.forEach(i => totalSellRaw += i.sellTotal); 
+            let discPercent = parseFloat(document.getElementById('invoiceDiscountPercent').value) || 0; 
+            let discValue = (totalSellRaw * discPercent) / 100;
+            inv = { id: activeInvoiceId, date: formatDateShort(document.getElementById('invoiceDate').value || new Date()), paymentType: document.getElementById('paymentTypeSelect').value, customerName: safeStr(document.getElementById('customerNameInput').value), items: JSON.parse(JSON.stringify(invoiceItems)), totalEGP: totalSellRaw - discValue };
+        }
+        if (!inv) return alert("⚠️ الفاتورة فارغة أو غير موجودة!");
+        
+        let text = `================================\n`;
+        text += `        El Sayeh Store          \n`;
+        text += `================================\n`;
+        text += `Invoice: #${inv.id}\n`;
+        text += `Type: ${inv.paymentType === 'credit' ? 'Credit' : 'Cash'}\n`;
+        text += `Date: ${inv.date}\n`;
+        text += `--------------------------------\n`;
+        
+        if (inv.items && inv.items.length > 0) {
+            inv.items.forEach(i => {
+                // دمجنا اسم الصنف بالإنجليزي لو أمكن، أو طباعته كما هو
+                text += `${i.name}\n`;
+                text += `  ${i.qty} x ${i.sellUnitPrice} = ${i.sellTotal} EGP\n`;
+            });
+        }
+        text += `--------------------------------\n`;
+        text += `Total:      ${inv.totalEGP} EGP\n`;
+        text += `================================\n`;
+        text += `      Thanks for visiting!      \n\n\n\n`;
+
+        // إرسال الفاتورة للبلوتوث مباشرة
+        DirectBLEPrinter.sendDataInChunks(text);
+    }
 </body>
 </html>
