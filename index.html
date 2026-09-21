@@ -2136,7 +2136,7 @@
         element.classList.add('pdf-export-mode');
 
         const opt = {
-            margin:       [12, 14, 12, 10], // توسيع الهوامش [أعلى، يمين، أسفل، يسار] لمنع أي قطع
+            margin:       [12, 14, 12, 10], 
             filename:     `Systems_C01_Report_${new Date().toISOString().slice(0,10)}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
@@ -2147,148 +2147,6 @@
         html2pdf().set(opt).from(element).save().then(() => {
             element.classList.remove('pdf-export-mode');
         });
-    }
-
-    function printBarcodeLabel(prodName) {
-        const prod = products.find(p => p.n === prodName);
-        if (!prod || !prod.barcode) return alert("⚠️ هذا المنتج لا يملك باركود بعد!");
-
-        const tempSvg = document.getElementById("tempBarcodeSvg");
-        JsBarcode(tempSvg, prod.barcode, {
-            format: "CODE128",
-            width: 1.0,
-            height: 24,
-            fontSize: 8,
-            textMargin: 1,
-            margin: 0,
-            displayValue: true
-        });
-
-        const svgContent = tempSvg.outerHTML;
-
-        const win = window.open('', '_blank', 'width=350,height=250');
-        if (!win) return alert("⚠️ يرجى السماح بالنوافذ المنبثقة (Pop-ups) للطباعة!");
-
-        win.document.write(`
-            <!DOCTYPE html>
-            <html><head><title>Print Label</title>
-            <style>
-                @page {
-                    size: 33mm 19mm landscape;
-                    margin: 0;
-                }
-                * { box-sizing: border-box; margin: 0; padding: 0; }
-                html, body {
-                    width: 33mm;
-                    height: 19mm;
-                    margin: 0;
-                    padding: 0;
-                    background: #fff;
-                    font-family: Arial, Helvetica, sans-serif;
-                    overflow: hidden;
-                    direction: rtl;
-                }
-                .label-card {
-                    width: 33mm;
-                    height: 19mm;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    padding: 2mm;
-                    box-sizing: border-box;
-                }
-                .store-name {
-                    font-size: 5.5pt;
-                    font-weight: bold;
-                    color: #000;
-                    line-height: 1;
-                    margin-bottom: 0.5mm;
-                    text-align: center;
-                }
-                .barcode-area {
-                    width: 29mm;
-                    height: 11mm;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-                svg {
-                    width: 29mm !important;
-                    height: 11mm !important;
-                }
-            </style></head>
-            <body>
-                <div class="label-card">
-                    <div class="store-name">Systems C01</div>
-                    <div class="barcode-area">
-                        ${svgContent}
-                    </div>
-                </div>
-                
-                <script>
-                    window.onload = function() {
-                        setTimeout(function() { window.print(); window.close(); }, 100);
-                    };
-                <\/script>
-            </body></html>
-        `);
-        win.document.close();
-    }
-
-    function printSingleReceipt(invId) {
-        const inv = savedInvoices.find(i => i.id === invId);
-        if (!inv) return;
-
-        let formattedDate = formatDateShort(inv.date);
-
-        let receiptHTML = `
-            <div style="font-size:16px; font-weight:bold; margin-bottom:2px; display:flex; align-items:center; justify-content:center; gap:4px;">
-                Systems C01
-            </div>
-            <div style="border-top:1px dashed #000; border-bottom:1px dashed #000; padding:4px 0; margin-bottom:6px; margin-top:6px;">
-                <p style="font-size:11px; margin:2px 0;">رقم الفاتورة: <b>#${inv.id}</b></p>
-                <p style="font-size:11px; margin:2px 0;">نوع الدفع: ${inv.paymentType === 'credit' ? 'آجل ('+inv.customerName+')' : 'نقدي'}</p>
-                <p style="font-size:11px; margin:2px 0;">التاريخ: ${formattedDate}</p>
-            </div>
-            <table style="width:100%; border-collapse:collapse; font-size:11px; text-align:right;">
-                <thead>
-                    <tr style="border-bottom:1px solid #000;">
-                        <th style="text-align:right; padding-bottom:4px;">الصنف</th>
-                        <th style="text-align:center; padding-bottom:4px;">العدد</th>
-                        <th style="text-align:left; padding-bottom:4px;">الإجمالي</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-
-        if (inv.items && inv.items.length > 0) {
-            inv.items.forEach(i => {
-                receiptHTML += `
-                    <tr>
-                        <td style="text-align:right; padding:3px 0;">${i.name} [${i.category || 'عام'}]</td>
-                        <td style="text-align:center; padding:3px 0;">${i.qty}</td>
-                        <td style="text-align:left; padding:3px 0;">${i.sellTotal.toFixed(2)}</td>
-                    </tr>
-                `;
-            });
-        }
-
-        receiptHTML += `
-                </tbody>
-            </table>
-            <div style="border-top:1px dashed #000; margin-top:6px; padding-top:6px;">
-                <h3 style="text-align:center; font-size:14px; margin:4px 0;">الإجمالي النهائي: ${inv.totalEGP.toFixed(2)} ج.م</h3>
-            </div>
-            <p style="font-size:10px; margin-top:8px;">شكراً لزيارتكم! نتشرف بتميزكم دائماً</p>
-            <div style="font-size:8px; color:#555; margin-top:4px;">Systems C01 - 2026</div>
-        `;
-
-        const printSec = document.getElementById('receiptPrintSection');
-        printSec.innerHTML = receiptHTML;
-        document.body.classList.add('printing-receipt');
-        window.print();
-        setTimeout(() => { document.body.classList.remove('printing-receipt'); printSec.innerHTML = ''; }, 500);
     }
 
     function changeUserPasswordSystem() {
@@ -2336,7 +2194,8 @@
         if(tabId === 'suppliersTab') renderSuppliersReport();
         if(tabId === 'reportsTab') { populatePartnerDropdown(); generateReport(); }
     }
-         // =========================================================================
+
+    // =========================================================================
     // ===== محرك الطباعة المباشرة عبر البلوتوث (Direct BLE XPrinter Engine) =====
     // =========================================================================
     
@@ -2346,14 +2205,11 @@
         
         async connect() {
             try {
-                // فتح نافذة الأندرويد الأصلية للبحث عن الطابعات
                 this.device = await navigator.bluetooth.requestDevice({
                     acceptAllDevices: true,
                     optionalServices: [
-                        '000018f0-0000-1000-8000-00805f9b34fb', // خدمات Xprinter
-                        '49535343-fe7d-4ae5-8fa9-9fafd205e455', // خدمات BLE عامة
-                        'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
-                        '00001101-0000-1000-8000-00805f9b34fb'  // SPP Classic
+                        '000018f0-0000-1000-8000-00805f9b34fb', // خدمات Xprinter الأساسية
+                        '49535343-fe7d-4ae5-8fa9-9fafd205e455'  // خدمات BLE بديلة
                     ] 
                 });
                 
@@ -2363,8 +2219,8 @@
                 for (const service of services) {
                     const characteristics = await service.getCharacteristics();
                     for (const char of characteristics) {
-                        // البحث عن المنفذ القابل للكتابة (إرسال البيانات)
-                        if (char.properties.write || char.properties.writeWithoutResponse) {
+                        // البحث عن منفذ الكتابة السريعة (يفضل writeWithoutResponse للطابعات)
+                        if (char.properties.writeWithoutResponse || char.properties.write) {
                             this.characteristic = char;
                             alert('✅ تم الربط بنجاح مع طابعة: ' + this.device.name);
                             return true;
@@ -2375,78 +2231,95 @@
                 return false;
             } catch(e) {
                 console.error(e);
-                alert('⚠️ لم يتم الاتصال. تأكد من تشغيل (البلوتوث) و (الموقع/Location) في الموبايل.\n\nتفاصيل: ' + e.message);
+                alert('⚠️ لم يتم الاتصال. تأكد من تشغيل (البلوتوث) و (الموقع/Location).\nالخطأ: ' + e.message);
                 return false;
             }
         },
 
-        async sendDataInChunks(dataString) {
+        async sendDataInChunks(dataString, isLabel = false) {
             if (!this.characteristic) {
                 let connected = await this.connect();
                 if (!connected) return;
             }
             try {
                 let encoder = new TextEncoder();
-                // أمر تهيئة الطابعة (ESC/POS Init)
-                let initCmd = new Uint8Array([0x1B, 0x40]);
-                await this.characteristic.writeValue(initCmd);
+                let dataToSend;
 
-                let data = encoder.encode(dataString);
-                // إرسال البيانات على دفعات (لأن بلوتوث BLE لا يقبل أكثر من 512 بايت في الدفعة)
-                for (let i = 0; i < data.length; i += 100) {
-                    await this.characteristic.writeValue(data.slice(i, i + 100));
+                if (isLabel) {
+                    // إذا كان استيكر باركود (TSPL) نرسل النص مباشرة بدون أمر تهيئة ESC/POS
+                    dataToSend = encoder.encode(dataString);
+                } else {
+                    // إذا كانت فاتورة (ESC/POS) نرسل أمر التهيئة أولاً
+                    let initCmd = new Uint8Array([0x1B, 0x40]);
+                    let textData = encoder.encode(dataString);
+                    dataToSend = new Uint8Array(initCmd.length + textData.length);
+                    dataToSend.set(initCmd);
+                    dataToSend.set(textData, initCmd.length);
+                }
+
+                // إرسال البيانات على دفعات لتفادي امتلاء ذاكرة الطابعة (Buffer Overflow)
+                const chunkSize = 200; 
+                for (let i = 0; i < dataToSend.length; i += chunkSize) {
+                    let chunk = dataToSend.slice(i, i + chunkSize);
+                    
+                    if (this.characteristic.properties.writeWithoutResponse) {
+                        await this.characteristic.writeValueWithoutResponse(chunk);
+                    } else {
+                        await this.characteristic.writeValue(chunk);
+                    }
+                    
+                    // تأخير زمني بسيط جداً لضمان عدم ضياع البيانات
+                    await new Promise(resolve => setTimeout(resolve, 20));
                 }
             } catch(e) {
                 alert('❌ فشل إرسال البيانات للطابعة: ' + e.message);
-                this.characteristic = null; // إعادة ضبط الاتصال
+                this.characteristic = null; // إعادة ضبط الاتصال في حالة انقطاع البلوتوث
             }
         }
     };
 
-    // --- 1. تعديل دالة طباعة الباركود (ليبل Xprinter) ---
-    // الطابعة بتستخدم أوامر هاردوير اسمها (TSPL) لطباعة الاستيكر
+    // --- 1. دالة طباعة الباركود (ليبل Xprinter وضع TSPL) ---
     function printBarcodeLabel(prodName) {
         const prod = products.find(p => p && p.n === prodName); 
         if (!prod || !prod.barcode) return alert("⚠️ هذا المنتج لا يملك باركود بعد!");
         
-        // بناء كود الهاردوير (TSPL) لمقاس ليبل 40x20 ملي (يمكنك تعديل المقاس من هنا)
+        // بناء كود الهاردوير (TSPL) لمقاس ليبل 40x20 ملي
         let tsplCmd = `SIZE 40 mm, 20 mm\r\n`;
         tsplCmd += `GAP 2 mm, 0 mm\r\n`;
-        tsplCmd += `CLS\r\n`; // مسح الذاكرة وبدء رسم ليبل جديد
+        tsplCmd += `DIRECTION 1\r\n`; // اتجاه الطباعة
+        tsplCmd += `CLS\r\n`; 
         
-        // رسم النصوص والباركود (استخدمنا إنجليزي لتفادي تشفير الطابعة للعربي)
-        tsplCmd += `TEXT 10,10,"TSS24.BF2",0,1,1,"El Sayeh Store"\r\n`;
-        tsplCmd += `BARCODE 10,60,"128",50,1,0,2,2,"${prod.barcode}"\r\n`;
-        tsplCmd += `TEXT 10,130,"TSS24.BF2",0,1,1,"Price: ${prod.sp} EGP"\r\n`;
+        tsplCmd += `TEXT 10,10,"TSS24.BF2",0,1,1,"Systems C01"\r\n`;
+        tsplCmd += `BARCODE 10,50,"128",50,1,0,2,2,"${prod.barcode}"\r\n`;
+        tsplCmd += `TEXT 10,120,"TSS24.BF2",0,1,1,"Price: ${prod.sp} EGP"\r\n`;
         
-        tsplCmd += `PRINT 1,1\r\n`; // أمر تنفيذ الطباعة
+        tsplCmd += `PRINT 1,1\r\n`; 
         
-        // إرسال الأمر المباشر للبلوتوث
-        DirectBLEPrinter.sendDataInChunks(tsplCmd);
+        // إرسال الأمر مع تحديد أن هذا (ليبل) لتفادي إرسال كود ESC/POS
+        DirectBLEPrinter.sendDataInChunks(tsplCmd, true);
     }
 
-    // --- 2. تعديل دالة طباعة ريسيت المبيعات ---
+    // --- 2. دالة طباعة ريسيت المبيعات (وضع ESC/POS) ---
     function printSingleReceipt(invId) {
         let inv = savedInvoices.find(i => i && i.id === invId);
         if (!inv && invoiceItems.length > 0) {
             let totalSellRaw = 0; invoiceItems.forEach(i => totalSellRaw += i.sellTotal); 
             let discPercent = parseFloat(document.getElementById('invoiceDiscountPercent').value) || 0; 
             let discValue = (totalSellRaw * discPercent) / 100;
-            inv = { id: activeInvoiceId, date: formatDateShort(document.getElementById('invoiceDate').value || new Date()), paymentType: document.getElementById('paymentTypeSelect').value, customerName: safeStr(document.getElementById('customerNameInput').value), items: JSON.parse(JSON.stringify(invoiceItems)), totalEGP: totalSellRaw - discValue };
+            inv = { id: activeInvoiceId, date: formatDateShort(document.getElementById('invoiceDate').value || new Date()), paymentType: document.getElementById('paymentTypeSelect').value, customerName: document.getElementById('customerNameInput').value, items: JSON.parse(JSON.stringify(invoiceItems)), totalEGP: totalSellRaw - discValue };
         }
         if (!inv) return alert("⚠️ الفاتورة فارغة أو غير موجودة!");
         
         let text = `================================\n`;
-        text += `        El Sayeh Store          \n`;
+        text += `        Systems C01             \n`;
         text += `================================\n`;
         text += `Invoice: #${inv.id}\n`;
         text += `Type: ${inv.paymentType === 'credit' ? 'Credit' : 'Cash'}\n`;
-        text += `Date: ${inv.date}\n`;
+        text += `Date: ${inv.date.replace('<br><span style="color:#64748b; font-size:0.7rem;">', ' ').replace('</span>', '')}\n`;
         text += `--------------------------------\n`;
         
         if (inv.items && inv.items.length > 0) {
             inv.items.forEach(i => {
-                // دمجنا اسم الصنف بالإنجليزي لو أمكن، أو طباعته كما هو
                 text += `${i.name}\n`;
                 text += `  ${i.qty} x ${i.sellUnitPrice} = ${i.sellTotal} EGP\n`;
             });
@@ -2456,10 +2329,10 @@
         text += `================================\n`;
         text += `      Thanks for visiting!      \n\n\n\n`;
 
-        // إرسال الفاتورة للبلوتوث مباشرة
-        DirectBLEPrinter.sendDataInChunks(text);
+        // إرسال الفاتورة للبلوتوث مباشرة (الخيار الثاني false يرسل أمر ESC/POS)
+        DirectBLEPrinter.sendDataInChunks(text, false);
     }
 
 </script>
 </body>
-   </html>
+</html>
